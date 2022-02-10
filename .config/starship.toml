@@ -1,0 +1,32 @@
+format = """
+$conda\
+$hostname\
+$directory\
+$git_branch\
+$git_status
+$cmd_duration\
+$character
+"""
+
+[cmd_duration]
+min_time = 2000
+format = " [$duration](bold purple) "
+
+[conda]
+format = '[\($environment\) ](bold green)'
+ignore_base = true
+
+[directory]
+format="[$path](bold cyan)"
+truncate_to_repo=false
+truncation_symbol=""
+
+[git_branch]
+format = "[ $symbol$branch](bold blue)"
+
+[git_status]
+format = ' [(\[$modified$staged$deleted$untracked \])](bold #5e81ac)'
+modified = '[( !$count)](bold yellow)'
+staged = '[( +$count)](bold green)'
+deleted = '[( -$count)](bold red)'
+untracked = '[( ?$count)](bold #4c566a)'
