@@ -15,7 +15,7 @@ Config {
     -- right_padding = num_icons * icon_size
     -- right_padding = 8 * 28 = 336
     -- Example: position = TopP 0 336
-    position = TopP 0 224,
+    position = TopP 0 280,
     font = "xft:Fira Code Nerd Font-14",
     bgColor = "#2E323A",
     fgColor = "#abb2bf",

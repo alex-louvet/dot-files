@@ -82,6 +82,9 @@ myManageHook = composeAll
     , className =? "Galculator"     --> doFloat
     , className =? "Steam"          --> doFloat
     , className =? "Gimp"           --> doFloat
+    , className =? "osu!"           --> doFloat
+    , className =? "qemu"           --> doFloat
+    , className =? "virt-manager"   --> doFloat
     , resource  =? "gpicview"       --> doFloat
     , className =? "MPlayer"        --> doFloat
     , className =? "stalonetray"    --> doIgnore
@@ -103,9 +106,9 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
 myLayout = avoidStruts (tiled ||| threeCol ||| mirror ||| Full) ||| fullFull
   where
-    tiled = mySpacing 8 $ (Tall 1 (3/100) (1/2))
-    threeCol = mySpacing 8 $ (ThreeColMid 1 (3/100) (1/2))
-    mirror = mySpacing 8 $ (Mirror (Tall 1 (3/100) (1/2))) 
+    tiled = mySpacing 2 $ (Tall 1 (3/100) (1/2))
+    threeCol = mySpacing 2 $ (ThreeColMid 1 (3/100) (1/2))
+    mirror = mySpacing 2 $ (Mirror (Tall 1 (3/100) (1/2))) 
     fullFull = noBorders (fullscreenFull Full)
 
 
@@ -123,7 +126,7 @@ xmobarTitleColor = "#E06C75"
 xmobarCurrentWorkspaceColor = "#98C379"
 
 -- Width of the window border in pixels.
-myBorderWidth = 2
+myBorderWidth = 1
 
 
 ------------------------------------------------------------------------
