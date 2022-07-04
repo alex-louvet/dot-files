@@ -42,7 +42,7 @@ myScreenshot = "screenshot"
 
 -- The command to use as a launcher, to launch commands that don't have
 -- preset keybindings.
-myLauncher = "dmenu_run -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379'"
+myLauncher = "dmenu_run -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379' -nhb '#1e2127' -nhf '#c678dd' -shb '#98c379' -shf '#c678dd'" 
 
 -- Location of your xmobar.hs / xmobarrc
 myXmobarrc = "~/.config/xmobar/xmobar.hs"
@@ -56,7 +56,7 @@ myFM = "nautilus"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:code","3:web","4:mail","5:socials","6:files","7:music"] ++ map show [8..9]
+myWorkspaces = ["1:term","2:code","3:web","4:mail","5:socials","6:files","7:music", "8:live"] ++ map show [9]
 
 
 ------------------------------------------------------------------------
