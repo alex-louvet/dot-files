@@ -1,0 +1,33 @@
+#!/bin/bash
+
+TWITCH=('aypierre' 'b1gmaw' 'cass_andre' 'chuckow' 'danyetraz' 'discordinsoumis' 'dokhy' 'imsofresh' 'jeanmassiet' 'lord_tinen' 'magarky' 'malm' 'nenu' 'shaunz' 'softstyle' 'theguill84' 'un33d' 'usul2000' 'voltariux' 'zerator' 'zozote')
+FRANCETV=('france-2' 'france-3' 'france-4' 'france-5')
+
+twitchchannels=""
+francetvchannels=""
+
+for channel in "${TWITCH[@]}";
+do
+	twitchchannels+="$channel\n"
+done
+
+for channel in "${FRANCETV[@]}";
+do
+	francetvchannels+="$channel\n"
+done
+
+platform=$(echo -e "twitch\nfrancetv" | dmenu -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379' -nhb '#1e2127' -nhf '#c678dd' -shb '#98c379' -shf '#c678dd')
+
+if [ $platform = "twitch" ];
+then
+	live=$(echo -e $twitchchannels | dmenu -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379' -nhb '#1e2127' -nhf '#c678dd' -shb '#98c379' -shf '#c678dd')
+	chatterino --channels t:$live &
+	live="https://twitch.tv/$live"
+elif [ $platform = "francetv" ];
+then
+	live="https://www.france.tv/"
+	live+=$(echo -e $francetvchannels | dmenu -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379' -nhb '#1e2127' -nhf '#c678dd' -shb '#98c379' -shf '#c678dd')
+	live+="/direct.html" 
+fi
+
+streamlink $live best
