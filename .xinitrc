@@ -62,6 +62,7 @@ joplin-desktop &
 birdtray &
 mictray &
 twitch-indicator &
+kdeconnect-indicator &
 cd /home/alexandre/code && docker-compose up -d &
 cd
 exec xmonad
