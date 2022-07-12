@@ -313,7 +313,7 @@ myStartupHook = return ()
 main = do
   xmproc <- spawnPipe ("xmobar -x 0 " ++ myXmobarrc)
   xmproc2 <- spawnPipe ("xmobar -x 1 /home/alexandre/.config/xmobar/xmobar2.hs")
-  xmonad $ defaults {
+  xmonad $ docks $defaults {
       logHook = dynamicLogWithPP $ xmobarPP {
             ppOutput = \x -> hPutStrLn xmproc x >> hPutStrLn xmproc2 x
           , ppTitle = xmobarColor xmobarTitleColor "" . shorten 100
@@ -323,7 +323,7 @@ main = do
       , manageHook = manageDocks <+> myManageHook
 --      , startupHook = docksStartupHook <+> setWMName "LG3D"
       , startupHook = setWMName "Xmonad"
-      , handleEventHook = docksEventHook
+      --, handleEventHook = docksEventHook
   }
 
 
@@ -335,7 +335,7 @@ main = do
 --
 -- No need to modify this.
 --
-defaults = defaultConfig {
+defaults = def {
     -- simple stuff
     terminal           = myTerminal,
     focusFollowsMouse  = myFocusFollowsMouse,
