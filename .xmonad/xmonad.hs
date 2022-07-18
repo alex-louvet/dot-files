@@ -35,7 +35,7 @@ myScreensaver = "betterlockscreen -l blur"
 
 -- The command to take a selective screenshot, where you select
 -- what you'd like to capture on the screen.
-mySelectScreenshot = "select-screenshot"
+mySelectScreenshot = "flameshot"
 
 -- The command to take a fullscreen screenshot.
 myScreenshot = "screenshot"
