@@ -53,7 +53,7 @@ xsetwacom --set "Wacom Bamboo One S Pen stylus" Mode "Relative"
 nitrogen --restore &
 #picom &
 dunst &
-redshift &
+redshift-gtk -l 48.78:2.31 &
 stalonetray -c /home/alexandre/.config/stalonetray/stalonetrayrc &
 ferdi &
 nextcloud &
