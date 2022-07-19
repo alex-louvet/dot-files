@@ -58,7 +58,7 @@ stalonetray -c /home/alexandre/.config/stalonetray/stalonetrayrc &
 ferdi &
 nextcloud &
 dropbox &
-joplin-desktop &
+joplin &
 birdtray &
 mictray &
 twitch-indicator &
