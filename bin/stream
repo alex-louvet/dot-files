@@ -21,7 +21,7 @@ platform=$(echo -e "twitch\nfrancetv" | dmenu -fn 'Fira Code Nerd Font-14' -nb '
 if [ $platform = "twitch" ];
 then
 	live=$(echo -e $twitchchannels | dmenu -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379' -nhb '#1e2127' -nhf '#c678dd' -shb '#98c379' -shf '#c678dd')
-	chatterino --channels t:$live &
+	#chatterino --channels t:$live &
 	live="https://twitch.tv/$live"
 elif [ $platform = "francetv" ];
 then
@@ -32,4 +32,18 @@ else
 	live=$platform
 fi
 
-streamlink $live best
+quality=$(streamlink $live)
+
+if [[ $quality = *"Available streams"* ]];
+then
+	quality=${quality/#*"streams: "}
+	quality=${quality//"(worst)"}
+	quality=${quality//"(best)"}
+	quality=${quality//,/"\n"}
+
+	quality=$(echo -e $quality | dmenu -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379' -nhb '#1e2127' -nhf '#c678dd' -shb '#98c379' -shf '#c678dd')
+
+	streamlink $live $quality
+else
+	$(echo -e "stream offline" | dmenu -fn 'Fira Code Nerd Font-14' -nb '#bf404a' -nf '#e06c75' -sb '#bf404a' -nhb '#bf404a' -nhf '#e06c75' -shb '#bf404a' -shf '#e06c75')
+fi

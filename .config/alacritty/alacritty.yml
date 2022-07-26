@@ -1356,7 +1356,7 @@ cyber_punk_neon: &cyber_punk_neon
       white: "0xabb2bf"
     bright:
       black: "0x5c6370"
-      red: "0xe06c75"
+      red: "0xbf404a"
       green: "0x98c379"
       yellow: "0xd19a66"
       blue: "0x61afef"
