@@ -64,7 +64,4 @@ mictray &
 twitch-indicator &
 kdeconnect-indicator &
 nm-applet &
-nmcli connection up idofront &
-cd /home/alexandre/code && docker-compose up -d &
-cd
 exec xmonad

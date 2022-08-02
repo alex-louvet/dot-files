@@ -47,7 +47,7 @@ myLauncher = "dmenu_run -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf'
 -- Location of your xmobar.hs / xmobarrc
 myXmobarrc = "~/.config/xmobar/xmobar.hs"
 
-myBrowser = "firefox"
+myBrowser = "librewolf"
 
 myFM = "nautilus"
 
@@ -75,6 +75,7 @@ myWorkspaces = ["1:term","2:code","3:web","4:mail","5:socials","6:files","7:musi
 --
 myManageHook = composeAll
     [ className =? "firefox"       --> doShift "3:web"
+    , className =? "librewolf"       --> doShift "3:web"
     , className =? "Thunderbird"       --> doShift "4:mail"
     , className =? "Ferdi"       --> doShift "5:socials"
     , className =? "Spotify"       --> doShift "7:music"

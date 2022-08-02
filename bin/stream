@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TWITCH=('aypierre' 'b1gmaw' 'bichard' 'cass_andre' 'chuckow' 'danyetraz' 'discordinsoumis' 'dokhy' 'imsofresh' 'jeanmassiet' 'lege' 'lord_tinen' 'magarky' 'malm' 'mouffette_' 'nenu' 'ostpolitik' 'pasdebol_tft' 'shaunz' 'softstyle' 'theguill84' 'un33d' 'usul2000' 'voltariux' 'zerator' 'zozote')
+TWITCH=('aypierre' 'b1gmaw' 'bichard' 'cass_andre' 'chuckow' 'danyetraz' 'discordinsoumis' 'dokhy' 'imsofresh' 'jeanmassiet' 'lege' 'lord_tinen' 'magarky' 'malm' 'mouffette_' 'nenu' 'ostpolitik' 'pasdebol_tft' 'shaunz' 'softstyl' 'theguill84' 'un33d' 'usul2000' 'voltariux' 'zerator' 'zozote')
 FRANCETV=('france-2' 'france-3' 'france-4' 'france-5')
 
 twitchchannels=""
