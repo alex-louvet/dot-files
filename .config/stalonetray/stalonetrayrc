@@ -13,9 +13,9 @@
 # 1 row of 8 icons, each 23px wide/tall. Resolution 2560x1440.
 # This icon size aligns with the size of xmobar with font "xft:monospace-8"
 # position = display_width - (num_icons * icon_size)
-# position = 2560 - (12 * 28) = 2224
+# position = 2560 - (15 * 28) = 2140
 # Example: geometry 8x1+3564
-geometry 12x1+2224
+geometry 15x1+2140
 icon_size 28
 sticky 1
 window_type dock

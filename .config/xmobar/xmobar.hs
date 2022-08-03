@@ -13,9 +13,9 @@ Config {
     -- overlap. stalonetrayrc-single is configured for 12 icons, each 23px
     -- wide. 
     -- right_padding = num_icons * icon_size
-    -- right_padding = 12 * 28 = 336
-    -- Example: position = TopP 0 336
-    position = TopP 0 336,
+    -- right_padding = 15 * 28 = 420
+    -- Example: position = TopP 0 420
+    position = TopP 0 420,
     font = "xft:Fira Code Nerd Font-14",
     bgColor = "#2E323A",
     fgColor = "#abb2bf",
