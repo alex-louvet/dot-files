@@ -16,7 +16,7 @@ Config {
     -- right_padding = 15 * 28 = 420
     -- Example: position = TopP 0 420
     position = TopP 0 420,
-    font = "xft:Fira Code Nerd Font-14",
+    font = "xft:JetBrainsMono Nerd Font-14",
     bgColor = "#1e1e2e",
     fgColor = "#cdd6f4",
     lowerOnStart = False,

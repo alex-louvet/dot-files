@@ -16,7 +16,7 @@ Config {
     -- right_padding = 15 * 28 = 420
     -- Example: position = TopP 0 420
     position = TopP 0 0,
-    font = "xft:Fira Code Nerd Font-14",
+    font = "xft:JetBrainsMono Nerd Font-14",
     bgColor = "#1e1e2e",
     fgColor = "#cdd6f4",
     lowerOnStart = False,
@@ -38,5 +38,5 @@ Config {
     ],
     sepChar = "%",
     alignSep = "}{",
-    template = "  %StdinReader% }{ <fc=#6c7086>||</fc> %cpu% %memory% %enp42s0% <fc=#6c7086>|</fc> <fc=#fab387>%kbd%</fc>  <fc=#89dceb>Vol: %volumelevel%</fc> <fc=#6c7086>|</fc> <fc=#f5e0dc>%date%</fc> <fc=#6c7086>|| </fc>"
+    template = "  %StdinReader% }{ <fc=#6c7086>||</fc> %cpu% %memory% %enp42s0% <fc=#6c7086>|</fc> <fc=#fab387>%kbd%</fc>  <fc=#89dceb>Vol: %volumelevel%</fc> <fc=#6c7086>|</fc> <fc=#f5e0dc>%date%</fc> "
 }
