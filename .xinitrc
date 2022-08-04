@@ -64,4 +64,5 @@ mictray &
 twitch-indicator &
 kdeconnect-indicator &
 nm-applet &
+bitwarden-desktop &
 exec xmonad

@@ -71,3 +71,7 @@ local ok, _ = pcall(vim.cmd, 'colorscheme base16-onedark')
 -- local ok, _ = pcall(vim.cmd, 'colorscheme base16-solarized-dark')
 -- local ok, _ = pcall(vim.cmd, 'colorscheme base16-solarized-light')
 -- local ok, _ = pcall(vim.cmd, 'colorscheme base16-tomorrow-night')
+
+-- Treesitter
+o.foldmethod = "expr"
+o.foldexpr = "nvim_treesitter#foldexpr()"
