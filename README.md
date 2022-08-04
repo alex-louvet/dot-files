@@ -8,6 +8,6 @@ OS: Arch
 
 - [The catppuccin theme page](https://github.com/catppuccin/catppuccin)
 
-- Lightdm theme: [Gab Nord](https://github.com/AlphaNecron/lightdm-gab-nord)
+- Lightdm theme: [Gab Catppuccin](https://github.com/alex-louvet/lightdm-gab-catppuccin)
 
 - Font: [JetBrainsMono Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono)
