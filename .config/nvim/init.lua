@@ -9,6 +9,10 @@ require("config.plugins")
 require("config.keybinds")
 
 -- Setups
+vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
+require("catppuccin").setup()
+vim.cmd([[colorscheme catppuccin]])
+
 require("lualine").setup()
 require("nvim-tree").setup({
 	open_on_setup_file = false,

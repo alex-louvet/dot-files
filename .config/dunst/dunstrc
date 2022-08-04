@@ -1,17 +1,9 @@
-[colors]
-		background = "#282c34"
-		frame_color = "#1e2127"
-		foreground = "#abb2bf"
-
 [global]
     ### Display ###
 
     monitor = 0
     follow = none
 
-    #geometry = "262x5-829-46"
-    #geometry = "262x3-14+46"
-    #geometry = "800x4-14+66"    
     width = 600
     height = 500
     offset = 10x50
@@ -25,8 +17,6 @@
     frame_width = 3
     corner_radius = 12
 
-    #frame_color = 
-    separator_color = auto
     sort = yes
     idle_threshold = 120
 
@@ -59,65 +49,20 @@
     ### Icons ###
     icon_position = left
     max_icon_size = 128
-    icon_path = /usr/share/icons/Nord-Icon/48x48/status/:/usr/share/icons/Nord-Icon/48x48/devices/:/usr/share/icons/Nord-Icon/48x48/apps:/home/alexandre/.icons/Nord-Icon/48x48/apps
+    icon_path = /usr/share/icons/Papirus/48x48/status/:/usr/share/icons/Papirus/48x48/devices/:/usr/share/icons/Papirus/48x48/apps:/home/alexandre/.icons/Papirus/48x48/apps
 
-    ### History ###
-    sticky_history = no
-    history_length = 20
-
-    ### Misc/Advanced ###
-    dmenu = /usr/bin/alacritty -e fzf:
-    browser = /usr/bin/linkhandler
-    always_run_script = false
-    title = Dunst
-    class = Dunst
-    startup_notification = true
-    force_xinerama = false
-
-[experimental]
-    per_monitor_dpi = false
-
-[log_notifs]
-    script = ~/.local/bin/dunst_logger.sh
-
-[qtile]
-    appname = Qtile
-    new_icon = /home/alexandre/.icons/Nord-Icon/48x48/apps/python.svg
-
-[pomodoro]
-    summary = Pomodoro
-    new_icon = /home/alexandre/.icons/Nord-Icon/48x48/apps/pomodoro-indicator.svg
-
-[slack]
-    desktop_entry = Slack
-    new_icon = /home/alexandre/.icons/Nord-Icon/48x48/apps/slack.svg
-
-[dunst_icon]
-    appname = dunst
-    new_icon = /home/alexandre/.icons/Nord-Icon/48x48/apps/bell.svg
-
-[shortcuts]
-    close = ctrl+space
-    close_all = ctrl+shift+space
-    #context = ctrl+shift+period
-    history = ctrl+grave
+    frame_color = "#89B4FA"
+    separator_color= frame
 
 [urgency_low]
-    background = "#1e2127"
-    foreground = "#81a1c1"
-    frame_color = "#3b4252"
-    timeout = 5
+    background = "#1E1E2E"
+    foreground = "#CDD6F4"
 
 [urgency_normal]
-    background = "#1e2127"
-    foreground = "#e5e9f0"
-    frame_color = "#3b4252"
-    timeout = 5
+    background = "#1E1E2E"
+    foreground = "#CDD6F4"
 
 [urgency_critical]
-    background = "#1e2127"
-    foreground = "#bf616a"
-    frame_color = "#3b4252"
-    timeout = 0
-
-# vim: ft=conf
+    background = "#1E1E2E"
+    foreground = "#CDD6F4"
+    frame_color = "#FAB387"

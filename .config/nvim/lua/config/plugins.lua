@@ -53,7 +53,8 @@ require("packer").startup(function()
 	})
 
 	-- Colorschemes
-	use("RRethy/nvim-base16")
+	use({ "catppuccin/nvim", as = "catppuccin" })
+	-- use("RRethy/nvim-base16")
 
 	-- LSP and more
 	use("nvim-treesitter/nvim-treesitter")

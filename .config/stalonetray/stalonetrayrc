@@ -23,5 +23,5 @@ dockapp_mode wmaker
 window_strut auto
 skip_taskbar 1
 icon_gravity NW
-background "#2E323A"
+background "#1e1e2e"
 kludges force_icons_size

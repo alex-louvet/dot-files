@@ -79,6 +79,11 @@ _G.packer_plugins = {
     path = "/home/alexandre/.local/share/nvim/site/pack/packer/start/LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
+  catppuccin = {
+    loaded = true,
+    path = "/home/alexandre/.local/share/nvim/site/pack/packer/start/catppuccin",
+    url = "https://github.com/catppuccin/nvim"
+  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/home/alexandre/.local/share/nvim/site/pack/packer/start/lualine.nvim",
@@ -103,11 +108,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/alexandre/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
-  },
-  ["nvim-base16"] = {
-    loaded = true,
-    path = "/home/alexandre/.local/share/nvim/site/pack/packer/start/nvim-base16",
-    url = "https://github.com/RRethy/nvim-base16"
   },
   ["nvim-lspconfig"] = {
     loaded = true,

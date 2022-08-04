@@ -42,7 +42,7 @@ myScreenshot = "screenshot"
 
 -- The command to use as a launcher, to launch commands that don't have
 -- preset keybindings.
-myLauncher = "dmenu_run -fn 'Fira Code Nerd Font-14' -nb '#1e2127' -nf '#abb2bf' -sb '#98c379' -nhb '#1e2127' -nhf '#c678dd' -shb '#98c379' -shf '#c678dd'" 
+myLauncher = "dmenu_run -fn 'Fira Code Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b'"
 
 -- Location of your xmobar.hs / xmobarrc
 myXmobarrc = "~/.config/xmobar/xmobar.hs"
@@ -117,14 +117,14 @@ myLayout = avoidStruts (tiled ||| threeCol ||| mirror ||| Full) ||| fullFull
 -- Colors and borders
 -- Currently based on the ir_black theme.
 --
-myNormalBorderColor  = "#1C2127"
-myFocusedBorderColor = "#98C379"
+myNormalBorderColor  = "#1e1e2e"
+myFocusedBorderColor = "#cba6f7"
 
 -- Color of current window title in xmobar.
-xmobarTitleColor = "#E06C75"
+xmobarTitleColor = "#eba0ac"
 
 -- Color of current workspace in xmobar.
-xmobarCurrentWorkspaceColor = "#98C379"
+xmobarCurrentWorkspaceColor = "#cba6f7"
 
 -- Width of the window border in pixels.
 myBorderWidth = 1
