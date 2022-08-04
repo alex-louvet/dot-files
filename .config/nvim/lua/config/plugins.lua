@@ -25,8 +25,12 @@ require("packer").startup(function()
 	use("tpope/vim-surround")
 
 	-- Syntax Highlighting and Colors --
-	use("vim-python/python-syntax")
-	use("ap/vim-css-color")
+	use({
+		"numToStr/Comment.nvim",
+	})
+	use({
+		"windwp/nvim-autopairs",
+	})
 
 	-- Zen mode Plugins --
 	use({
@@ -59,5 +63,5 @@ require("packer").startup(function()
 		"neovim/nvim-lspconfig",
 	})
 	use("jose-elias-alvarez/null-ls.nvim")
-    use("L3MON4D3/LuaSnip")
+	use("L3MON4D3/LuaSnip")
 end)

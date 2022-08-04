@@ -88,6 +88,17 @@ require("mason").setup({
 })
 require("mason-lspconfig").setup()
 
+require("telescope").setup({
+	defaults = {
+		border = {},
+		borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+		set_env = { ["COLORTERM"] = "truecolor" },
+	},
+})
+
+require("nvim-autopairs").setup()
+require("Comment").setup()
+
 require("luasnip.loaders.from_vscode").lazy_load()
 
 local null_ls = require("null-ls")
