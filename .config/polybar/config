@@ -177,7 +177,7 @@ type = custom/text
 format-spacing = 1
 content = 
 content-foreground = ${colors.red}
-click-left = bash ~/bin/shutdown
+click-left = bash ~/bin/shutdown_util
 
 [module/xkeyboard]
 type = internal/xkeyboard

@@ -65,4 +65,5 @@ twitch-indicator &
 kdeconnect-indicator &
 nm-applet &
 bitwarden-desktop &
+./.config/polybar/launch.sh &
 exec xmonad

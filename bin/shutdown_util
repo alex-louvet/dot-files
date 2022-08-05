@@ -7,7 +7,7 @@ then
     shutdown now
 elif [ $option = "reboot" ];
 then
-    reboot now
+    systemctl reboot
 elif [ $option = "lock" ];
 then
     betterlockscreen -l blur
