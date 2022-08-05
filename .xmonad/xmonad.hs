@@ -57,7 +57,7 @@ myFM = "nautilus"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["term","code","web","mail","socials","files","music", "live", "txt"]
+myWorkspaces = ["home","code","web","mail","socials","files","music", "live", "txt"]
 
 
 ------------------------------------------------------------------------

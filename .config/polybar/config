@@ -48,7 +48,7 @@ module-margin-right = 1
 font-0 = JetBrainsMono Nerd Font:pixelsize=12:antialias=true;2.5
 font-1 = JetBrainsMono nerd font:style=regular:pixelsize=16:antialias=true;3
 font-2 = JetBrainsMono nerd font:style=regular:pixelsize=18:antialias=true;3
-font-3 = JetBrainsMono nerd font:style=regular:pixelsize=20:antialias=true;3
+font-3 = JetBrainsMono nerd font:style=regular:pixelsize=19:antialias=true;3
 
 modules-left = ewmh 
 modules-center = xwindow
@@ -89,15 +89,15 @@ enable-click = true
 enable-scroll = false
 
 icon-default = "  "
-icon-0 = "term;  "
-icon-1 = "code;   "
-icon-2 = "web;   "
-icon-3 = "mail;   "
-icon-4 = "socials;   "
-icon-5 = "files;   " 
-icon-6 = "music;  "
-icon-7 = "live;  " 
-icon-8 = "txt;   "
+icon-0 = "home;%{T2}  %{T-}"
+icon-1 = "code;%{T2}  %{T-}"
+icon-2 = "web;%{T2}  %{T-}"
+icon-3 = "mail;%{T2}  %{T-}"
+icon-4 = "socials;%{T2} 切 %{T-}"
+icon-5 = "files;%{T2}  %{T-}"
+icon-6 = "music;%{T2}  %{T-}"
+icon-7 = "live;%{T2}  %{T-}"
+icon-8 = "txt;%{T2}  %{T-}"
 icon-9 = "9;9" 
 
 
