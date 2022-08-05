@@ -78,6 +78,7 @@ myManageHook = composeAll
     , className =? "librewolf"       --> doShift "3:web"
     , className =? "Thunderbird"       --> doShift "4:mail"
     , className =? "Ferdi"       --> doShift "5:socials"
+    , className =? "discord"       --> doShift "5:socials"
     , className =? "Spotify"       --> doShift "7:music"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat

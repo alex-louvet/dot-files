@@ -38,5 +38,5 @@ Config {
     ],
     sepChar = "%",
     alignSep = "}{",
-    template = "  %StdinReader% }{ <fc=#6c7086>||</fc> %cpu% %memory% %enp42s0% <fc=#6c7086>|</fc> <fc=#fab387>%kbd%</fc>  <fc=#89dceb>Vol: %volumelevel%</fc> <fc=#6c7086>|</fc> <fc=#f5e0dc>%date%</fc> <fc=#6c7086>|| </fc>"
+    template = "  %StdinReader% }{ <fc=#6c7086>||</fc> %cpu% %memory% %enp42s0% <fc=#6c7086>|</fc> <fc=#fab387>%kbd%</fc>  <fc=#94e2d5>Vol: %volumelevel%</fc> <fc=#6c7086>|</fc> <fc=#cba6f7>%date%</fc> || "
 }

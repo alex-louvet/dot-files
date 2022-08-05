@@ -55,7 +55,7 @@ picom &
 dunst &
 redshift-gtk -l 48.78:2.31 &
 stalonetray -c /home/alexandre/.config/stalonetray/stalonetrayrc &
-ferdi &
+discord &
 nextcloud &
 dropbox &
 joplin &
