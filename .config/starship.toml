@@ -30,3 +30,7 @@ modified = '[( !$count)](bold yellow)'
 staged = '[( +$count)](bold green)'
 deleted = '[( -$count)](bold red)'
 untracked = '[( ?$count)](bold #4c566a)'
+
+[character]
+success_symbol = "[λ](bold green) "
+error_symbol = "[λ](bold red) "
