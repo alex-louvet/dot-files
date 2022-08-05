@@ -9,6 +9,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spiral
@@ -42,7 +43,7 @@ myScreenshot = "screenshot"
 
 -- The command to use as a launcher, to launch commands that don't have
 -- preset keybindings.
-myLauncher = "dmenu_run -fn 'JetBrainsMono Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b'"
+myLauncher = "dmenu_run -l 20 -fn 'JetBrainsMono Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b'"
 
 -- Location of your xmobar.hs / xmobarrc
 myXmobarrc = "~/.config/xmobar/xmobar.hs"
@@ -56,7 +57,7 @@ myFM = "nautilus"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:code","3:web","4:mail","5:socials","6:files","7:music", "8:live"] ++ map show [9]
+myWorkspaces = ["term","code","web","mail","socials","files","music", "live", "txt"]
 
 
 ------------------------------------------------------------------------
@@ -74,12 +75,12 @@ myWorkspaces = ["1:term","2:code","3:web","4:mail","5:socials","6:files","7:musi
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "firefox"       --> doShift "3:web"
-    , className =? "librewolf"       --> doShift "3:web"
-    , className =? "Thunderbird"       --> doShift "4:mail"
-    , className =? "Ferdi"       --> doShift "5:socials"
-    , className =? "discord"       --> doShift "5:socials"
-    , className =? "Spotify"       --> doShift "7:music"
+    [ className =? "firefox"       --> doShift "web"
+    , className =? "librewolf"       --> doShift "web"
+    , className =? "Thunderbird"       --> doShift "mail"
+    , className =? "Ferdi"       --> doShift "socials"
+    , className =? "discord"       --> doShift "socials"
+    , className =? "Spotify"       --> doShift "music"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
     , className =? "Steam"          --> doFloat
@@ -306,26 +307,19 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- per-workspace layout choices.
 --
 -- By default, do nothing.
-myStartupHook = return ()
+myStartupHook = do
+    spawnOnce "bash ~/.config/polybar/launch.sh"
+    setWMName "XMonad"
 
 
 ------------------------------------------------------------------------
 -- Run xmonad with all the defaults we set up.
 --
 main = do
-  xmproc <- spawnPipe ("xmobar -x 0 " ++ myXmobarrc)
-  xmproc2 <- spawnPipe ("xmobar -x 1 /home/alexandre/.config/xmobar/xmobar2.hs")
-  xmonad $ docks $defaults {
-      logHook = dynamicLogWithPP $ xmobarPP {
-            ppOutput = \x -> hPutStrLn xmproc x >> hPutStrLn xmproc2 x
-          , ppTitle = xmobarColor xmobarTitleColor "" . shorten 100
-          , ppCurrent = xmobarColor xmobarCurrentWorkspaceColor ""
-          , ppSep = "   "
-      }
-      , manageHook = manageDocks <+> myManageHook
---      , startupHook = docksStartupHook <+> setWMName "LG3D"
-      , startupHook = setWMName "Xmonad"
-      --, handleEventHook = docksEventHook
+  -- xmproc <- spawnPipe ("xmobar -x 0 " ++ myXmobarrc)
+  -- xmproc2 <- spawnPipe ("xmobar -x 1 /home/alexandre/.config/xmobar/xmobar2.hs")
+  xmonad $ docks $ ewmh $ defaults {
+      manageHook = manageDocks <+> myManageHook
   }
 
 

@@ -54,13 +54,13 @@ nitrogen --restore &
 picom &
 dunst &
 redshift-gtk -l 48.78:2.31 &
-stalonetray -c /home/alexandre/.config/stalonetray/stalonetrayrc &
+#stalonetray -c /home/alexandre/.config/stalonetray/stalonetrayrc &
 discord &
 nextcloud &
 dropbox &
 joplin &
 birdtray &
-mictray &
+#mictray &
 twitch-indicator &
 kdeconnect-indicator &
 nm-applet &
