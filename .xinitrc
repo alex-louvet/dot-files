@@ -54,16 +54,13 @@ nitrogen --restore &
 picom &
 dunst &
 redshift-gtk -l 48.78:2.31 &
-#stalonetray -c /home/alexandre/.config/stalonetray/stalonetrayrc &
 discord &
 nextcloud &
 dropbox &
 joplin &
 birdtray &
-#mictray &
 twitch-indicator &
 kdeconnect-indicator &
 nm-applet &
 bitwarden-desktop &
-./.config/polybar/launch.sh &
-exec xmonad
+exec leftwm
