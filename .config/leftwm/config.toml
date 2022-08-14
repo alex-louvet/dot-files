@@ -290,7 +290,7 @@ key = "f"
 [[keybind]]
 command = "ToggleScratchPad"
 value = "Alacritty" # Name set for the scratchpad
-modifier = ["modkey"]
+modifier = ["modkey", "Shift"]
 key = "p"
 
 
