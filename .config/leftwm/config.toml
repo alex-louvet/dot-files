@@ -281,3 +281,28 @@ command = "MoveToTag"
 value = "9"
 modifier = ["modkey", "Shift"]
 key = "9"
+
+[[keybind]]
+command = "ToggleFullScreen"
+modifier = ["modkey", "Shift"]
+key = "f"
+
+[[keybind]]
+command = "ToggleScratchPad"
+value = "Alacritty" # Name set for the scratchpad
+modifier = ["modkey"]
+key = "p"
+
+
+window_rules = [
+  # windows whose WM_CLASS is "Navigator" will be spawn on tag 2 (by position, 1-indexed)
+  {window_class = "librewolf", spawn_on_tag = 3},
+  # windows whose window title is "Pentablet" will be spawned floating on tag 9
+  {window_title = "discord", spawn_on_tag = 5},
+  {window_title = "Thunderbird", spawn_on_tag = 4},
+  {window_title = "Youtube Music", spawn_on_tag = 7},
+]
+
+scratchpad = [
+    { name = "Alacritty", value = "alacritty", x = 860, y = 390, height = 300, width = 200 },
+]
