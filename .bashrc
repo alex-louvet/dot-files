@@ -25,3 +25,4 @@ unset __conda_setup
 
 # start Xorg 
 # startx
+. "$HOME/.cargo/env"

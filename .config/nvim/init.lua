@@ -90,7 +90,10 @@ require("mason").setup({
 		},
 	},
 })
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup({
+	ensure_installed = { "html", "hls", "tsserver", "texlab", "sumneko_lua", "marksman", "pyright", "rust_analyzer" },
+	automatic_installation = true,
+})
 
 require("telescope").setup({
 	defaults = {
@@ -126,6 +129,7 @@ null_ls.setup({
 		null_ls.builtins.formatting.codespell,
 		null_ls.builtins.formatting.latexindent,
 		null_ls.builtins.formatting.markdownlint,
+		null_ls.builtins.formatting.rustfmt,
 
 		-- Diagnostic
 		null_ls.builtins.diagnostics.eslint_d,
@@ -151,5 +155,25 @@ null_ls.setup({
 				end,
 			})
 		end
+	end,
+})
+
+-- LSP config
+require("lspconfig").html.setup({})
+require("lspconfig").hls.setup({})
+require("lspconfig").tsserver.setup({})
+require("lspconfig").texlab.setup({})
+require("lspconfig").sumneko_lua.setup({
+	on_attach = function(client, bufnr)
+		client.resolved_capabilities.document_formatting = false
+		vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
+	end,
+})
+require("lspconfig").marksman.setup({})
+require("lspconfig").pyright.setup({})
+require("lspconfig").rust_analyzer.setup({
+	on_attach = function(client, bufnr)
+		client.resolved_capabilities.document_formatting = false
+		vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
 	end,
 })
