@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Stream Launcher
+Comment=Start streams from twitch or Francetv
+Exec=/home/alexandre/bin/stream  %u
+Icon=streamlink-twitch-gui
+StartupWMClass=Stream
+Type=Application
+Categories=Network;
+MimeType=x-scheme-handler/stream;
