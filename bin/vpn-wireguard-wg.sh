@@ -27,11 +27,11 @@ case "$1" in
     ;;
 *)
     if [ "$(connection_status)" = "1" ]; then
-        echo "$config_name"
+        echo "%{F#89dceb}嬨 $config_name%{F-}"
     elif [ "$(connection_status)" = "3" ]; then
-        echo "Config not found!"
+        echo "%{F#f38ba8}Config not found!%{F-}"
     else
-        echo "down"
+        echo "%{F#9399b2}嬨 down%{F-}"
     fi
     ;;
 esac
