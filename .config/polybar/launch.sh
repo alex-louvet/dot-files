@@ -3,7 +3,7 @@ killall -q polybar
 if type "xrandr" ; then
     index=0
     for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-        barname="mainbar$index"
+        barname="mainbar$((index<1 ? index : 1))"
         monitor=$m polybar --reload $barname -q &
         let index=index+1
     done
