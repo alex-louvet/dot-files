@@ -14,5 +14,4 @@ WM: LeftWM
 
 - Font: [JetBrainsMono Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono)
 
-- Original LeftWm Theme: [Catppuccin](https://github.com/di-effe/catppuccin/tree/main)
-  - and my [remix of it](https://github.com/alex-louvet/catppuccin)
+- Took some rofi widgets and ideas from: [Catppuccin](https://github.com/di-effe/catppuccin/tree/main)

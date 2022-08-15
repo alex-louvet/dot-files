@@ -58,6 +58,5 @@ joplin &
 birdtray &
 twitch-indicator &
 kdeconnect-indicator &
-nm-applet &
 bitwarden-desktop &
-exec leftwm
+exec xmonad

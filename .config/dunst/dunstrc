@@ -51,7 +51,7 @@
     max_icon_size = 128
     icon_path = /usr/share/icons/Papirus/48x48/status/:/usr/share/icons/Papirus/48x48/devices/:/usr/share/icons/Papirus/48x48/apps:/home/alexandre/.icons/Papirus/48x48/apps
 
-    frame_color = "#89B4FA"
+    frame_color = "#cba6f7"
     separator_color= frame
 
 [urgency_low]

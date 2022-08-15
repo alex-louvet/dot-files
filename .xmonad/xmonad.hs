@@ -43,7 +43,7 @@ myScreenshot = "screenshot"
 
 -- The command to use as a launcher, to launch commands that don't have
 -- preset keybindings.
-myLauncher = "dmenu_run -l 20 -fn 'JetBrainsMono Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b'"
+myLauncher = "~/bin/launcher.sh"
 
 -- Location of your xmobar.hs / xmobarrc
 myXmobarrc = "~/.config/xmobar/xmobar.hs"
@@ -311,6 +311,8 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- By default, do nothing.
 myStartupHook = do
     spawnOnce "bash ~/.config/polybar/launch.sh"
+    spawnOnce "picom"
+    spawnOnce "nitrogen --restore"
     setWMName "XMonad"
 
 
