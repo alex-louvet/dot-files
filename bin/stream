@@ -43,7 +43,14 @@ then
 
     quality=$(echo -e $quality | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
 
-	streamlink $live $quality
-else
-    $(rofi -e "stream offline" -theme "~/bin/rasi/stream_offline.rasi")
+streamlink $live $quality
+
+elif [[ $quality == *"No playable streams found on this URL"* ]];
+then
+    if ! [[ $quality == *"https://www.france.tv//direct.html"* ]];
+    then
+        $(rofi -e "stream offline" -theme "~/bin/rasi/stream_offline.rasi")
+    else
+        echo "1"
+    fi
 fi
