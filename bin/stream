@@ -16,17 +16,17 @@ do
 	francetvchannels+="$channel\n"
 done
 
-platform=$(echo -e "twitch\nfrancetv" | dmenu -l 20 -fn 'JetBrainsMono Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b')
+platform=$(echo -e "twitch\nfrancetv" | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
 
 if [ $platform = "twitch" ];
 then
-	live=$(echo -e $twitchchannels | dmenu -l 20 -fn 'JetBrainsMono Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b')
+	live=$(echo -e $twitchchannels | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
 	#chatterino --channels t:$live &
 	live="https://twitch.tv/$live"
 elif [ $platform = "francetv" ];
 then
 	live="https://www.france.tv/"
-	live+=$(echo -e $francetvchannels | dmenu -l 20 -fn 'JetBrainsMono Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b')
+	live+=$(echo -e $francetvchannels | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
 	live+="/direct.html" 
 else
 	live=$platform
@@ -41,9 +41,9 @@ then
 	quality=${quality//"(best)"}
 	quality=${quality//,/"\n"}
 
-    quality=$(echo -e $quality | dmenu -l 20 -fn 'JetBrainsMono Nerd Font-14' -nb '#1e1e2e' -nf '#cdd6f4' -sb '#cba6f7' -sf '#313244' -nhb '#1e1e2e' -nhf '#cba6f7' -shb '#cba6f7' -shf '#11111b')
+    quality=$(echo -e $quality | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
 
 	streamlink $live $quality
 else
-    $(echo -e "stream offline" | dmenu -l 20 -fn 'JetBrainsMono Nerd Font-14' -nb '#f2cdcd' -nf '#f38ba8' -sb '#f2cdcd' -sf '#f38ba8' -nhb '#f2cdcd' -nhf '#f38ba8' -shb '#f2cdcd' -shf '#f38ba8')
+    $(rofi -e "stream offline" -theme "~/bin/rasi/stream_offline.rasi")
 fi
