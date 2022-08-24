@@ -92,6 +92,7 @@ myManageHook = composeAll
     , className =? "virt-manager"   --> doFloat
     , resource  =? "gpicview"       --> doFloat
     , className =? "MPlayer"        --> doFloat
+    , className =? "Nextcloud"        --> doFloat
     , className =? "stalonetray"    --> doIgnore
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
