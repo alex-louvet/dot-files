@@ -23,7 +23,6 @@ configuration {
 window {
     location:               center;
     width:                  480;
-    y-offset:               -200;
     border-radius:          4px;
     background-color:       @background;
 }

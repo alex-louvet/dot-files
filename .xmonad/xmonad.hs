@@ -77,7 +77,7 @@ myWorkspaces = ["home","code","web","mail","socials","files","music", "live", "t
 myManageHook = composeAll
     [ className =? "firefox"       --> doShift "web"
     , className =? "librewolf"       --> doShift "web"
-    , className =? "Thunderbird"       --> doShift "mail"
+    , className =? "thunderbird"       --> doShift "mail"
     , className =? "Ferdi"       --> doShift "socials"
     , className =? "discord"       --> doShift "socials"
     , className =? "Spotify"       --> doShift "music"
@@ -109,7 +109,7 @@ myManageHook = composeAll
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout = avoidStruts (tiled ||| threeCol ||| mirror ||| Full) ||| fullFull
+myLayout = avoidStruts (tiled ||| threeCol ||| mirror) ||| fullFull
   where
     tiled = mySpacing 2 $ (Tall 1 (3/100) (1/2))
     threeCol = mySpacing 2 $ (ThreeColMid 1 (3/100) (1/2))
@@ -180,19 +180,19 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Mute volume.
   , ((0, xF86XK_AudioMute),
-     spawn "amixer -q set Master toggle")
+     spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
 
   -- Decrease volume.
   , ((0, xF86XK_AudioLowerVolume),
-     spawn "amixer -q set Master 5%-")
+     spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
 
   -- Increase volume.
   , ((0, xF86XK_AudioRaiseVolume),
-     spawn "amixer -q set Master 5%+")
+     spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
 
   -- Mute volume.
   , ((modMask .|. controlMask, xK_m),
-     spawn "amixer -q set Master toggle")
+     spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
 
   -- Change Keyboard layout
   , ((modMask .|. controlMask ,       xK_space     ), spawn "bash ~/bin/kbswitch")
@@ -248,6 +248,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Restart picom
   , ((modMask .|. shiftMask, xK_r), spawn "bash ~/bin/picom-restart")
+
+  , ((modMask              , xK_b     ), sendMessage ToggleStruts)
   ]
   ++
 
