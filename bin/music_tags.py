@@ -35,6 +35,12 @@ for album in os.listdir(PATH):
             audiofile.tag.artist = artist
             audiofile.tag.album = album_name
             audiofile.tag.album_artist = artist
-            audiofile.tag.title = song
+            if song.find(".mp3"):
+                title = song[:-4]
+            else:
+                title = song
+            audiofile.tag.title = title
             audiofile.tag.release_date = date
+            audiofile.tag.recording_date = date
+            audiofile.tag.year = date
             audiofile.tag.save()
