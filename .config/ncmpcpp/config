@@ -14,6 +14,12 @@ visualizer_type = "spectrum"
 visualizer_look = "◆▋"
 #visualizer_look = "+|"
 #visualizer_look = "●●"
+
+visualizer_spectrum_smooth_look = no
+visualizer_spectrum_dft_size = 4
+visualizer_spectrum_gain = 10
+#visualizer_spectrum_hz_min = 100
+#visualizer_spectrum_hz_max = 2000
  
 message_delay_time = "3"
 playlist_shorten_total_times = "yes"
@@ -29,13 +35,29 @@ locked_screen_width_part = "60"
 display_bitrate = "yes"
 external_editor = "nano"
 use_console_editor = "yes"
-header_window_color = "cyan"
-volume_color = "red"
-state_line_color = "yellow"
-state_flags_color = "red"
-progressbar_color = "yellow"
-statusbar_color = "cyan"
-visualizer_color = "cyan" #magenta #cyan #green #red #blue
+
+#themes
+
+#catppuccin
+
+empty_tag_color = 147
+header_window_color = 183
+volume_color = 147
+state_line_color = 147
+state_flags_color = 147
+main_window_color = 183
+color1 = 183
+color2 = 147
+progressbar_color = 243
+progressbar_elapsed_color = 183
+statusbar_color = 183
+statusbar_time_color = 147
+player_state_color = 147
+alternative_ui_separator_color = 243
+
+visualizer_color = 111, 111, 117, 45
+
+song_columns_list_format = "(25)[111]{a} (40)[117]{f} (30)[45]{b} (7f)[80]{l}"
  
 mpd_host = "127.0.0.1"
 mpd_port = "6601"
@@ -43,6 +65,5 @@ mouse_list_scroll_whole_page = "yes"
 lines_scrolled = "1"
 #ask_before_clearing_main_playlist = "yes"
 enable_window_title = "yes"
-song_columns_list_format = "(25)[cyan]{a} (40)[]{f} (30)[red]{b} (7f)[green]{l}"
 
 execute_on_song_change = notify-send -a "Now Playing" -i mpd "$(mpc --port 6601 --format '%title% \n%artist% - %album%' current)"
