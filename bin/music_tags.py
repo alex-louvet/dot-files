@@ -15,7 +15,7 @@ def maxi_dict(dicto):
 
 
 for album in os.listdir(PATH):
-    if os.path.isdir(PATH + album):
+    if os.path.isdir(PATH + album) and album != "Playlists":
         artist = album[: album.find(" - ")]
         album_name = album[album.find(" - ") + 3 :]
         dico = {}

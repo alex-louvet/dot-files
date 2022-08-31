@@ -59,4 +59,5 @@ birdtray &
 twitch-indicator &
 kdeconnect-indicator &
 bitwarden-desktop &
+mpd &
 exec xmonad

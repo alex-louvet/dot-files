@@ -94,6 +94,7 @@ myManageHook = composeAll
     , className =? "MPlayer"        --> doFloat
     , className =? "Nextcloud"        --> doFloat
     , className =? "stalonetray"    --> doIgnore
+    , title =? "floating ncmpcpp"    --> doFloat
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
 
@@ -251,6 +252,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. shiftMask, xK_r), spawn "bash ~/bin/picom-restart")
 
   , ((modMask              , xK_b     ), sendMessage ToggleStruts)
+  , ((modMask              , xK_m), spawn "alacritty -t 'floating ncmpcpp' -e ncmpcpp")
   ]
   ++
 
