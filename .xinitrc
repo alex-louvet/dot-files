@@ -51,7 +51,7 @@ fi
 xsetwacom --set "Wacom Bamboo One S Pen stylus" Mode "Relative"
 xsetroot -cursor_name left_ptr
 redshift-gtk -l 48.78:2.31 &
-discord &
+ferdi &
 nextcloud &
 dropbox &
 joplin &

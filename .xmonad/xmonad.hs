@@ -95,6 +95,7 @@ myManageHook = composeAll
     , className =? "Nextcloud"        --> doFloat
     , className =? "stalonetray"    --> doIgnore
     , title =? "floating ncmpcpp"    --> doFloat
+    , title =? "floating noise"    --> doFloat
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
 
