@@ -23,6 +23,8 @@ window_rules = [
   {window_title = "floating noise", spawn_floating = true},
   {window_class = "Yad", spawn_floating = true},
   {window_class = "yad", spawn_floating = true},
+  {window_class = "leagueclient.exe", spawn_floating = true},
+  {window_class = "riotclientux.exe", spawn_floating = true},
 ]
 
 scratchpad = [
@@ -315,3 +317,27 @@ command = "Execute"
 value = "alacritty -t 'floating ncmpcpp' -e ncmpcpp"
 modifier = ["modkey"]
 key = "m"
+
+[[keybind]]
+command = "Execute"
+value = "~/bin/kbswitch"
+modifier = ["modkey", "Control"]
+key = "space"
+
+[[keybind]]
+command = "Execute"
+value = "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+modifier = []
+key = "XF86XK_AudioMute"
+
+[[keybind]]
+command = "Execute"
+value = "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+modifier = []
+key = "XF86XK_AudioLowerVolume"
+
+[[keybind]]
+command = "Execute"
+value = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
+modifier = []
+key = "XF86XK_AudioRaiseVolume"
