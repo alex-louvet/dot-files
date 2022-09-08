@@ -104,15 +104,15 @@ font:
     style: Regular
 
   bold:
-    family: FiraCode Nerd Font Mono
+    family: JetBrainsMono Nerd Font
     style: Bold
 
   italic:
-    family: FiraCode Nerd Font Mono
+    family: JetBrainsMono Nerd Font
     style: Italic
 
   bold_italic:
-    family: FiraCode Nerd Font Mono
+    family: JetBrainsMono Nerd Font
     style: Bold Italic
 
   size: 12
