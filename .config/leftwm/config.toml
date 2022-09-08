@@ -2,15 +2,32 @@ modkey = "Mod4"
 mousekey = "Mod4"
 workspaces = []
 tags = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-layouts = ["MainAndVertStack", "MainAndHorizontalStack", "MainAndDeck", "GridHorizontal", "EvenHorizontal", "EvenVertical", "Fibonacci", "LeftMain", "CenterMain", "CenterMainBalanced", "CenterMainFluid", "Monocle", "RightWiderLeftStack", "LeftWiderRightStack"]
+layouts = ["MainAndVertStack", "RightWiderLeftStack", "LeftWiderRightStack", "Monocle"]
+#layouts = ["MainAndVertStack", "MainAndHorizontalStack", "MainAndDeck", "GridHorizontal", "EvenHorizontal", "EvenVertical", "Fibonacci", "LeftMain", "CenterMain", "CenterMainBalanced", "CenterMainFluid", "Monocle", "RightWiderLeftStack", "LeftWiderRightStack"]
 layout_mode = "Workspace"
 insert_behavior = "Bottom"
-scratchpad = []
-window_rules = []
 disable_current_tag_swap = false
 disable_tile_drag = false
 focus_behaviour = "Sloppy"
 focus_new_windows = true
+window_rules = [
+  # windows whose WM_CLASS is "Navigator" will be spawn on tag 2 (by position, 1-indexed)
+  {window_class = "librewolf", spawn_on_tag = 3},
+  {window_class = "firefox", spawn_on_tag = 3},
+  # windows whose window title is "Pentablet" will be spawned floating on tag 9
+  {window_class = "thunderbird", spawn_on_tag = 4},
+  {window_class = "Ferdi", spawn_on_tag = 5},
+  {window_class = "Discord", spawn_on_tag = 5},
+  {window_class = "Nextcloud", spawn_floating = true},
+  {window_title = "floating ncmpcpp", spawn_floating = true},
+  {window_title = "floating noise", spawn_floating = true},
+  {window_class = "Yad", spawn_floating = true},
+  {window_class = "yad", spawn_floating = true},
+]
+
+scratchpad = [
+    { name = "Alacritty", value = "alacritty", x = 860, y = 390, height = 500, width = 800 },
+]
 
 [[keybind]]
 command = "Execute"
@@ -293,27 +310,8 @@ value = "Alacritty" # Name set for the scratchpad
 modifier = ["modkey", "Shift"]
 key = "p"
 
-
-window_rules = [
-  # windows whose WM_CLASS is "Navigator" will be spawn on tag 2 (by position, 1-indexed)
-  {window_class = "librewolf", spawn_on_tag = 3},
-  # windows whose window title is "Pentablet" will be spawned floating on tag 9
-  {window_class = "discord", spawn_on_tag = 5},
-  {window_class = "Thunderbird", spawn_on_tag = 4},
-  {window_class = "Youtube Music", spawn_on_tag = 7},
-  {window_class = "Yad", spawn_floating = true},
-  {window_class = "yad", spawn_floating = true},
-  {window_title = "yad-calendar", spawn_floating = true},
-  {window_class = "yad-calendar", spawn_floating = true},
-]
-
-
-[[scratchpad]]
-name = "Alacritty" # This is the name which is referenced when calling (case-sensitive)
-value = "alacritty" # The command to load the application if it isn't started
-# x, y, width, height are in pixels when an integer is inputted or a percentage when a float is inputted.
-# These values are relative to the size of the workspace, and will be restricted depending on the workspace size.
-x = 860
-y = 390
-height = 300
-width = 200
+[[keybind]]
+command = "Execute"
+value = "alacritty -t 'floating ncmpcpp' -e ncmpcpp"
+modifier = ["modkey"]
+key = "m"

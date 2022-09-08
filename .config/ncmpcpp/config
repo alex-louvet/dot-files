@@ -57,7 +57,7 @@ alternative_ui_separator_color = 243
 
 visualizer_color = 111, 111, 117, 45
 
-song_columns_list_format = "(25)[111]{a} (40)[117]{f} (30)[45]{b} (7f)[80]{l}"
+song_columns_list_format = "(25)[111]{a} (40)[117]{t} (30)[45]{b} (7f)[80]{l}"
  
 mpd_host = "127.0.0.1"
 mpd_port = "6601"

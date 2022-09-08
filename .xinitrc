@@ -60,4 +60,4 @@ twitch-indicator &
 kdeconnect-indicator &
 bitwarden-desktop &
 mpd &
-exec xmonad
+exec dbus-launch leftwm
