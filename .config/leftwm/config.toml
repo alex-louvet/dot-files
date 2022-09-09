@@ -18,13 +18,12 @@ window_rules = [
   {window_class = "thunderbird", spawn_on_tag = 4},
   {window_class = "Ferdi", spawn_on_tag = 5},
   {window_class = "Discord", spawn_on_tag = 5},
+  {window_class = "Element", spawn_on_tag = 5},
   {window_class = "Nextcloud", spawn_floating = true},
   {window_title = "floating ncmpcpp", spawn_floating = true},
   {window_title = "floating noise", spawn_floating = true},
   {window_class = "Yad", spawn_floating = true},
   {window_class = "yad", spawn_floating = true},
-  {window_class = "leagueclient.exe", spawn_floating = true},
-  {window_class = "riotclientux.exe", spawn_floating = true},
 ]
 
 scratchpad = [
@@ -341,3 +340,26 @@ command = "Execute"
 value = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
 modifier = []
 key = "XF86XK_AudioRaiseVolume"
+
+[[keybind]]
+command = "Execute"
+value = "~/.config/leftwm/themes/catppuccin/scripts/toggle_bar.sh"
+modifier = ["modkey"]
+key = "b"
+
+[[keybind]]
+command = "ToggleFloating"
+modifier = ["modkey", "Shift"]
+key = "t"
+
+[[keybind]]
+command = "IncreaseMainWidth"
+value = "5"
+modifier = ["modkey", "Mod1"]
+key = "Right"
+
+[[keybind]]
+command = "DecreaseMainWidth"
+value = "5"
+modifier = ["modkey", "Mod1"]
+key = "Left"
