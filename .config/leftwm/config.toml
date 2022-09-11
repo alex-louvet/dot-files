@@ -17,7 +17,7 @@ window_rules = [
   # windows whose window title is "Pentablet" will be spawned floating on tag 9
   {window_class = "thunderbird", spawn_on_tag = 4},
   {window_class = "Ferdi", spawn_on_tag = 5},
-  {window_class = "Discord", spawn_on_tag = 5},
+  {window_class = "discord", spawn_on_tag = 5},
   {window_class = "Element", spawn_on_tag = 5},
   {window_class = "Nextcloud", spawn_floating = true},
   {window_title = "floating ncmpcpp", spawn_floating = true},
@@ -28,6 +28,7 @@ window_rules = [
 
 scratchpad = [
     { name = "Alacritty", value = "alacritty", x = 860, y = 390, height = 500, width = 800 },
+    { name = "Ncmpcpp", value = "alacritty -t 'floating ncmpcpp' -e ncmpcpp", x = 860, y = 390, height = 500, width = 800 },
 ]
 
 [[keybind]]
@@ -312,10 +313,11 @@ modifier = ["modkey", "Shift"]
 key = "p"
 
 [[keybind]]
-command = "Execute"
-value = "alacritty -t 'floating ncmpcpp' -e ncmpcpp"
+command = "ToggleScratchPad"
+value = "Ncmpcpp" # Name set for the scratchpad
 modifier = ["modkey"]
 key = "m"
+
 
 [[keybind]]
 command = "Execute"
