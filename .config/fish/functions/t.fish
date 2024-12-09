@@ -1,4 +1,4 @@
-function t --wraps=zellij --description 'alias t zellij'
-  zellij $argv
+function t --wraps=tmux --description 'alias t tmux'
+  tmux $argv
         
 end
