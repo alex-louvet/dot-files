@@ -170,5 +170,11 @@ alias rip 'expac --timefmt="%Y-%m-%d %T" "%l\t%n %v" | sort | tail -200 | nl'
 #    fastfetch --config neofetch.jsonc
 #end
 
-export EDITOR=helix
+if type -q tmux
+    if not test -n "$TMUX"
+        tmux new-session
+    end
+end
+
+export EDITOR=nvim
 export TERMINAL=kitty
