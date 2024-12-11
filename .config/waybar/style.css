@@ -64,6 +64,7 @@ window#waybar {
     border-color: #d8dee9;
     border-style: solid;
     margin-top:2px;
+    border-radius: 5px;
 }
 
 #workspaces button.focused {
