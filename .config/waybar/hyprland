@@ -2,7 +2,7 @@
   "position": "top",
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["hyprland/window"],
-  "modules-right": ["network", "pulseaudio", "clock"],
+  "modules-right": ["hyprland/language", "pulseaudio", "clock","tray","custom/power"],
   "clock": {
     "format": "<span>   </span>{:%a %d %H:%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
@@ -36,5 +36,22 @@
           "default": ["", "", " "]
       },
       "on-click": "pavucontrol"
-  }
+  },
+  "hyprland/language": {
+    "format": "{}",
+    "format-en": "us",
+    "format-fr": "fr",
+  },
+    "custom/power": {
+      	"format":"⏻",
+       	"on-click": "systemctl -i poweroff",
+      	"tooltip": false,
+    },
+    "hyprland/window": {
+	"format": "{title:.30}",
+    },
+    "tray": {
+    	"icon-size": 22,
+    	"spacing": 5
+    }
 }
