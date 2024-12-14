@@ -157,6 +157,10 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- tab size
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -633,7 +637,17 @@ require('lazy').setup({
           end,
           offset_encoding = 'utf-8',
         },
-        texlab = {},
+        texlab = {
+          settings = {
+            texlab = {
+
+              build = {
+                onSave = true,
+              },
+            },
+            chktex = { onOpenAndSave = true },
+          },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
