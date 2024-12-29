@@ -629,7 +629,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         rust_analyzer = {},
         tinymist = {
           root_dir = function(filename, bufnr)
@@ -742,7 +742,7 @@ require('lazy').setup({
         typst = { 'typstfmt', 'codespell' },
         latex = { 'tex-fmt', 'codespell' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -968,6 +968,7 @@ require('lazy').setup({
         'luadoc',
         'markdown',
         'markdown_inline',
+        'python',
         'query',
         'rust',
         'typst',
