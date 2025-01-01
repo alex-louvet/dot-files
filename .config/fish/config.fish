@@ -1,9 +1,9 @@
 ## Set values
 # Hide welcome message & ensure we are reporting fish as shell
 set fish_greeting
-set VIRTUAL_ENV_DISABLE_PROMPT 1
 set -xU MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -xU MANROFFOPT -c
+set VIRTUAL_ENV_DISABLE_PROMPT 1
 set -x SHELL /usr/bin/fish
 
 ## Export variable need for qt-theme
@@ -43,7 +43,7 @@ end
 
 
 ## Advanced command-not-found hook
-source /usr/share/doc/find-the-command/ftc.fish
+#source /usr/share/doc/find-the-command/ftc.fish
 
 
 ## Functions
@@ -107,14 +107,15 @@ end
 ## Useful aliases
 
 # Replace ls with eza
-alias ls 'eza -al --color=always --group-directories-first --icons' # preferred listing
+alias ls 'eza -l --color=always --group-directories-first --icons' # preferred listing
 alias la 'eza -a --color=always --group-directories-first --icons' # all files and dirs
-alias ll 'eza -l --color=always --group-directories-first --icons' # long format
+alias ll 'eza -al --color=always --group-directories-first --icons' # long format
 alias lt 'eza -aT --color=always --group-directories-first --icons' # tree listing
 alias l. 'eza -ald --color=always --group-directories-first --icons .*' # show only dotfiles
 
 # Replace some more things with better alternatives
-alias cat 'bat --style header --style snip --style changes --style header'
+alias cat bat
+
 if not test -x /usr/bin/yay; and test -x /usr/bin/paru
     alias yay paru
 end
@@ -165,16 +166,20 @@ alias jctl 'journalctl -p 3 -xb'
 # Recent installed packages
 alias rip 'expac --timefmt="%Y-%m-%d %T" "%l\t%n %v" | sort | tail -200 | nl'
 
+zoxide init fish --cmd cd | source
 ## Run fastfetch if session is interactive
 #if status --is-interactive && type -q fastfetch
 #    fastfetch --config neofetch.jsonc
 #end
+
+fish_vi_cursor
+fish_vi_key_bindings
 
 if type -q tmux
     if not test -n "$TMUX"
         tmux new-session
     end
 end
-
+source "$HOME/.cargo/env.fish"
 export EDITOR=nvim
-export TERMINAL=kitty
+export TERMINAL=ghostty

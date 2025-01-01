@@ -30,18 +30,14 @@ button {
 
 button:hover {
     background: inherit;
-    color: @base0E;
-    border-top: 2px solid @base0E;
+    color: @base0A;
+    border-top: 2px solid @base0A;
 }
 
 #workspaces button {
     padding: 0 4px;
-}
-
-#workspaces button.focused {
-    background-color: rgba(0, 0, 0, 0.3);
-    color: @base0A;
-    border-top: 2px solid @base0A;
+    color: @base04;
+    border-top: 2px solid @base01;
 }
 
 #workspaces button.active {
@@ -52,6 +48,7 @@ button:hover {
 
 #workspaces button.urgent {
     background-color: @base08;
+    border-top: 2px solid @base08;
 }
 
 #pulseaudio,
