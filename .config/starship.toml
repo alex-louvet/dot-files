@@ -10,11 +10,15 @@ right_format = """$cmd_duration"""
 
 [directory]
 style = "bold yellow"
+truncate_to_repo = false
 
 [character]
-success_symbol = "[ ❯](green)"
-error_symbol = "[ ❯](red)"
-vimcmd_symbol = "[ ❮](dimmed green)"
+success_symbol = "[  ](green)"
+error_symbol = "[  ]( green)"
+vimcmd_symbol = "[  ](blue)"
+vimcmd_visual_symbol = "[  ](purple)" 
+vimcmd_replace_symbol = "[  ](blue)"
+vimcmd_replace_one_symbol = "[  ](blue)"
 
 [git_branch]
 format = '[\[ $branch\]]($style)'
