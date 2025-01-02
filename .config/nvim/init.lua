@@ -83,6 +83,16 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
+--
+
+-- pin the main file
+vim.api.nvim_create_user_command('TypstPin', function()
+  vim.lsp.buf.execute_command { command = 'tinymist.pinMain', arguments = { vim.api.nvim_buf_get_name(0) } }
+end, { desc = 'Pin current file as main for tinymist' })
+-- unpin the main file
+vim.api.nvim_create_user_command('TypstUnpin', function()
+  vim.lsp.buf.execute_command { command = 'tinymist.pinMain', arguments = { nil } }
+end, { desc = 'Unpin tinymist main file' })
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -636,6 +646,10 @@ require('lazy').setup({
             return vim.fn.getcwd()
           end,
           offset_encoding = 'utf-8',
+          settings = {
+            exportPdf = 'onSave',
+            formatterMode = 'typstfmt',
+          },
         },
         texlab = {
           settings = {
