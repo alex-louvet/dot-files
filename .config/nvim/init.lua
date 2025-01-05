@@ -2,10 +2,20 @@
 vim.api.nvim_create_user_command('TypstPin', function()
   vim.lsp.buf.execute_command { command = 'tinymist.pinMain', arguments = { vim.api.nvim_buf_get_name(0) } }
 end, { desc = 'Pin current file as main for tinymist' })
--- unpin the main file
-vim.api.nvim_create_user_command('TypstUnpin', function()
-  vim.lsp.buf.execute_command { command = 'tinymist.pinMain', arguments = { nil } }
-end, { desc = 'Unpin tinymist main file' })
+
+-- Open PDF of current file typst
+vim.api.nvim_create_user_command('TypstPDF', function()
+  local name = vim.fn.expand '%:p:r'
+  vim.cmd('terminal evince ' .. name .. '.pdf')
+  vim.cmd('e ' .. name .. '.typ')
+end, { desc = 'Open pdf correponding to current typst file' })
+
+-- Open PDF of current file latex
+vim.api.nvim_create_user_command('LatexPDF', function()
+  local name = vim.fn.expand '%:p:r'
+  vim.cmd('terminal evince ' .. name .. '.pdf')
+  vim.cmd('e ' .. name .. '.tex')
+end, { desc = 'Open pdf correponding to current typst file' })
 
 vim.api.nvim_create_user_command('SpellCheck', 'setlocal spell spelllang=en_us', { desc = 'Enable spell check in english' })
 vim.api.nvim_create_user_command('SpellCheckFR', 'setlocal spell spelllang=fr_FR', { desc = 'Enable spell check in french' })
