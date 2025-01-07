@@ -17,6 +17,20 @@ vim.api.nvim_create_user_command('LatexPDF', function()
   vim.cmd('e ' .. name .. '.tex')
 end, { desc = 'Open pdf correponding to current typst file' })
 
+-- Watch typst file
+vim.api.nvim_create_user_command('TypstWatch', function()
+  local name = vim.fn.expand '%'
+  vim.cmd('terminal typst watch ' .. name)
+  vim.cmd('e ' .. name)
+end, { desc = 'Launch hot reloading on current typst file' })
+
+-- Compile typst file
+vim.api.nvim_create_user_command('TypstCompile', function()
+  local name = vim.fn.expand '%'
+  vim.cmd('terminal typst compile ' .. name)
+  vim.cmd('e ' .. name)
+end, { desc = 'Compile current typst file' })
+
 vim.api.nvim_create_user_command('SpellCheck', 'setlocal spell spelllang=en_us', { desc = 'Enable spell check in english' })
 vim.api.nvim_create_user_command('SpellCheckFR', 'setlocal spell spelllang=fr_FR', { desc = 'Enable spell check in french' })
 
@@ -573,7 +587,6 @@ require('lazy').setup({
           end,
           offset_encoding = 'utf-8',
           settings = {
-            exportPdf = 'onSave',
             formatterMode = 'typstfmt',
           },
         },
@@ -650,6 +663,7 @@ require('lazy').setup({
           end,
         },
       }
+      require('lspconfig').gleam.setup {}
     end,
   },
 
