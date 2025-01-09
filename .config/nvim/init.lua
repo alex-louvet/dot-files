@@ -31,6 +31,15 @@ vim.api.nvim_create_user_command('TypstCompile', function()
   vim.cmd('e ' .. name)
 end, { desc = 'Compile current typst file' })
 
+vim.api.nvim_create_user_command('TypstAll', function()
+  local name = vim.fn.expand '%'
+  local namepdf = vim.fn.expand '%:p:r'
+  vim.lsp.buf.execute_command { command = 'tinymist.pinMain', arguments = { vim.api.nvim_buf_get_name(0) } }
+  vim.cmd('terminal evince ' .. namepdf .. '.pdf')
+  vim.cmd('terminal typst watch ' .. name)
+  vim.cmd('e ' .. name)
+end, { desc = 'Compile current typst file' })
+
 vim.api.nvim_create_user_command('SpellCheck', 'setlocal spell spelllang=en_us', { desc = 'Enable spell check in english' })
 vim.api.nvim_create_user_command('SpellCheckFR', 'setlocal spell spelllang=fr_FR', { desc = 'Enable spell check in french' })
 

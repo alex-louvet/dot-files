@@ -38,4 +38,11 @@ return {
       vim.fn['mkdp#util#install']()
     end,
   },
+  {
+    'matkrin/telescope-spell-errors.nvim',
+    config = function()
+      require('telescope').load_extension 'spell_errors'
+    end,
+    dependencies = 'nvim-telescope/telescope.nvim',
+  },
 }
