@@ -939,7 +939,6 @@ require('lazy').setup({
         'lua',
         'luadoc',
         'markdown',
-        'markdown_inline',
         'python',
         'query',
         'rust',
@@ -987,6 +986,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   { import = 'custom.plugins' },
+  vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' }),
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
