@@ -48,7 +48,7 @@ return {
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
   },
   {
-    'tjdevries/present.nvim',
+    'alex-louvet/present.nvim',
     dependencies = { 'folke/snacks.nvim' },
     ft = { 'markdown' },
   },

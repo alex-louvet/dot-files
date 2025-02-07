@@ -83,6 +83,14 @@ button:hover {
     color: @base06;
     border-bottom: 2px solid @base06;
     margin-left: 0px;
+    margin-right: 0px;
+}
+
+#network{
+    color: @base06;
+    border-bottom: 2px solid @base06;
+    margin-left: 0px;
+    margin-left: 0px;
 }
 
 #clock {
@@ -98,11 +106,6 @@ button:hover {
 #pulseaudio {
     color: @base0D;
     border-bottom: 2px solid @base0D;
-}
-
-#network {
-    color: @base0B;
-    border-bottom: 2px solid @base0B;
 }
 
 #idle_inhibitor {
