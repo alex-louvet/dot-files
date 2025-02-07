@@ -54,8 +54,6 @@ button:hover {
 #pulseaudio,
 #clock,
 #battery,
-#cpu,
-#memory,
 #disk,
 #temperature,
 #backlight,
@@ -64,6 +62,8 @@ button:hover {
 #network,
 #mode,
 #language,
+#cpu,
+#memory,
 #scratchpad {
   margin-top: 2px;
   margin-bottom: 2px;
@@ -71,6 +71,18 @@ button:hover {
   margin-right: 4px;
   padding-left: 4px;
   padding-right: 4px;
+}
+
+#cpu{
+    color: @base06;
+    border-bottom: 2px solid @base06;
+    margin-right: 0px;
+}
+
+#memory{
+    color: @base06;
+    border-bottom: 2px solid @base06;
+    margin-left: 0px;
 }
 
 #clock {
