@@ -2,6 +2,6 @@
 
 Dotfiles for my sway garuda config
 
-OS: Garuda
+OS: Arch Linux
 
-WM: Sway
+WM: Hyprland / Gnome

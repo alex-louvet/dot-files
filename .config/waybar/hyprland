@@ -59,7 +59,7 @@
 				"tooltip": false,
 			},
 			"hyprland/window": {
-				"format": "{title:.30}",
+				"format": "{title:.0}",
 			},
 			"tray": {
 				"icon-size": 22,
