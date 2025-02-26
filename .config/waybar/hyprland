@@ -55,7 +55,7 @@
 			},
 			"custom/power": {
 				"format":"⏻",
-				"on-click": "systemctl -i poweroff",
+				"on-click": "bash /home/alexandre/.config/waybar/scripts/exit-menu.sh",
 				"tooltip": false,
 			},
 			"hyprland/window": {
