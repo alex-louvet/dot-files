@@ -712,10 +712,11 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         rust = { 'rustfmt' },
-        typst = { 'typstyle', 'codespell' },
-        latex = { 'tex-fmt', 'codespell' },
+        typst = { 'typstyle' },
+        latex = { 'tex-fmt' },
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
+        cpp = { 'clang-format' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -750,7 +751,12 @@ require('lazy').setup({
       -- C-k: Toggle signature help (if signature.enabled = true)
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
-      keymap = { preset = 'default' },
+      keymap = {
+        preset = 'default',
+        ['<S-tab>'] = { 'select_prev', 'fallback' },
+        ['<tab>'] = { 'select_next', 'fallback' },
+        ['<enter>'] = { 'select_and_accept', 'fallback' },
+      },
 
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
