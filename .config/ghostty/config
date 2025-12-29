@@ -1,0 +1,12 @@
+font-family = "MonaspiceNe NF"
+font-style = "Light"
+font-size = "14"
+theme = Kanagawabones
+cursor-style = "block"
+shell-integration = "fish"
+shell-integration-features = true
+command = "fish"
+window-decoration = false
+confirm-close-surface = false
+fullscreen = false
+app-notifications = no-clipboard-copy

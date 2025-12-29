@@ -1,0 +1,10 @@
+inherits = "base16_transparent"
+
+"comment" = { fg = "#4c566a", modifiers = ["italic"] }
+
+"ui.bufferline" = {}
+"ui.bufferline.active" = { fg = "background" , bg = "green" }
+"ui.bufferline.background" = { fg = "green" , bg = "background" }
+
+[palette]
+background = "#1f1f28"
