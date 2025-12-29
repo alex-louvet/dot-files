@@ -1,0 +1,106 @@
+# --- MOD KEY ---
+super = Mod4
+
+# --- LAUNCHERS ---
+super + t
+    ghostty
+
+super + f
+    zen
+
+super + g
+    nautilus
+
+super + m
+    ghostty --title="fncmpcpp" -e ncmpcpp
+
+# Restart Polybar + display script
+super + shift + x
+    ~/bin/update_display.sh && ~/.config/polybar/bspwm.sh
+
+# Lock screen
+ctrl + shift + l
+    /home/allouvet/.config/i3/i3lock-multimonitor/lock -i /home/allouvet/Pictures/TCR27_desktop.png
+
+# Dmenu launcher
+super + space
+    dmenu_run -fn 'JetBrainsMono NF-13' -nf '#DCD7BA' -nb '#1F1F28' -sb '#DCD7BA' -sf '#1F1F28'
+
+# --- FOCUS / MOVE ---
+super + {h,j,k,l}
+    bspc node -f {west,south,north,east}
+
+super + shift + {h,j,k,l}
+    bspc node -s {west,south,north,east}
+
+# --- FULLSCREEN ---
+super + shift + f
+    ~/.config/bspwm/toggle_fullscreen.sh
+
+# --- FLOATING TOGGLE ---
+super + shift + t
+    ~/.config/bspwm/toggle_tiling.sh
+
+# --- KILL WINDOW ---
+super + q
+    bspc node -c
+
+# --- WORKSPACES ---
+super + {1-9,0}
+    bspc desktop -f {1,2,3,4,5,6,7,8,9,10}
+
+super + shift + {1-9,0}
+    bspc node -d {1,2,3,4,5,6,7,8,9,10}
+
+# --- LAYOUTS ---
+super + Tab
+    bsp-layout next --layouts tall,tiled,grid,monocle
+
+# --- RESTART / QUIT ---
+super + shift + r
+    bspc wm -r
+
+super + shift + q
+    pkill -x bspwm
+
+super + shift + b
+    ~/.config/polybar/bspwm.sh
+
+# --- RESIZE MODE (like i3's "resize") ---
+alt + {h,j,k,l}
+  bspc node -z {left -20 0 || bspc node -z right -20 0, \
+                bottom 0 20 || bspc node -z top 0 20,\
+                top 0 -20 || bspc node -z bottom 0 -20,\
+                right 20 0 || bspc node -z left 20 0}
+
+# --- MOVE WINDOW IN TILE GRID ---
+super + alt + {h,j,k,l}
+    bspc node -v {-20 0,+0 +20,+0 -20,+20 0}
+
+# --- VOLUME KEYS ---
+XF86AudioRaiseVolume
+    pactl set-sink-volume @DEFAULT_SINK@ +2%
+
+XF86AudioLowerVolume
+    pactl set-sink-volume @DEFAULT_SINK@ -2%
+
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+XF86AudioMicMute
+    pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+XF86AudioPrev
+    playerctl -a previous
+
+XF86AudioNext
+    playerctl -a next
+
+XF86AudioPlay
+    playerctl -a play-pause
+
+XF86MonBrightnessDown
+    brightnessctl set 10%-
+
+XF86MonBrightnessUp
+    brightnessctl set 10%+

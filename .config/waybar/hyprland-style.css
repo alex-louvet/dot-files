@@ -1,0 +1,153 @@
+@import "kanagawa.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 16px;
+  min-height: 0;
+  font-weight: bold;
+}
+
+window#waybar {
+  background: transparent;
+  background-color: @base01;
+  color: @base05;
+  transition-property: background-color;
+  transition-duration: 0.1s;
+  border-bottom: 1px solid @base00;
+}
+
+#window {
+  margin: 8px;
+  padding-left: 8;
+  padding-right: 8;
+}
+
+button {
+  box-shadow: inset 0 -3px transparent;
+  border: none;
+  border-radius: 0;
+}
+
+button:hover {
+  background: inherit;
+  color: @base0A;
+  border-top: 2px solid @base0A;
+}
+
+#workspaces button {
+  padding: 0 4px;
+  color: @base04;
+  border-top: 2px solid @base01;
+}
+
+#workspaces button.active {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: @base04;
+  border-top: 2px solid @base04;
+}
+
+#workspaces button.urgent {
+  background-color: @base08;
+  border-top: 2px solid @base08;
+}
+
+#pulseaudio,
+#clock,
+#battery,
+#disk,
+#temperature,
+#backlight,
+#wireplumber,
+#tray,
+#network,
+#mode,
+#language,
+#cpu,
+#memory,
+#scratchpad {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 4px;
+  margin-right: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#cpu {
+  color: @base06;
+  border-bottom: 2px solid @base06;
+  margin-right: 0px;
+}
+
+#memory {
+  color: @base06;
+  border-bottom: 2px solid @base06;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#network {
+  color: @base06;
+  border-bottom: 2px solid @base06;
+  margin-left: 0px;
+  margin-left: 0px;
+}
+
+#clock {
+  color: @base0A;
+  border-bottom: 2px solid @base0A;
+}
+
+#clock.date {
+  color: @base0A;
+  border-bottom: 2px solid @base0A;
+}
+
+#pulseaudio {
+  color: @base0D;
+  border-bottom: 2px solid @base0D;
+}
+
+#idle_inhibitor {
+  margin-right: 12px;
+  color: #7cb342;
+}
+
+#idle_inhibitor.activated {
+  color: @;
+}
+
+#battery {
+  color: @base0E;
+  border-bottom: 2px solid @base0E;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+  margin-left: 0;
+}
+
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+  margin-right: 0;
+}
+
+#custom-vpn {
+  color: @base0C;
+  border-radius: 15px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+#custom-power {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-left: 0px;
+  color: @base01;
+  background-color: @base05;
+}
+
+#language {
+  color: @base0B;
+  border-bottom: 2px solid @base0B;
+}

@@ -1,0 +1,68 @@
+[global]
+    ### Display ###
+
+    monitor = 1
+    follow = keyboard
+
+    width = (0,600)
+    height = (0,500)
+    offset = (10,50)
+    indicate_hidden = yes
+    shrink = true
+    transparency = 0
+    separator_height = 2
+    padding = 44
+    horizontal_padding = 44
+    frame_width = 3
+    corner_radius = 12
+
+    sort = yes
+    idle_threshold = 120
+
+    ### Text ###
+    font = JetBrainsMono Nerd Font, Font Awesome 5 Free Solid 9
+    line_height = 0
+
+    markup = full
+
+    # The format of the message.  Possible variables are:
+    #   %a  appname
+    #   %s  summary
+    #   %b  body
+    #   %i  iconname (including its path)
+    #   %I  iconname (without its path)
+    #   %p  progress value if set ([  0%] to [100%]) or nothing
+    #   %n  progress value if set without any extra characters
+    #   %%  Literal %
+    # Markup is allowed
+    format = "<b>%a</b>\n%s\n%b"
+    alignment = left
+    show_age_threshold = 60
+    word_wrap = true
+    ellipsize = middle
+    ignore_newline = false
+    stack_duplicates = true
+    hide_duplicate_count = true
+    show_indicators = true
+
+    ### Icons ###
+    icon_position = left
+    max_icon_size = 128
+    icon_path = /usr/share/icons/Papirus/48x48/status/:/usr/share/icons/Papirus/48x48/devices/:/usr/share/icons/Papirus/48x48/apps:/home/alexandre/.icons/Papirus/48x48/apps
+
+    frame_color = "#DCD7BA"
+    separator_color= frame
+
+[urgency_low]
+    background = "#1F1F28"
+    foreground = "#DCD7BA"
+
+[urgency_normal]
+    background = "#1F1F28"
+	frame_color = "#DCD7BA"
+    foreground = "#DCD7BA"
+
+[urgency_critical]
+    background = "#1F1F28"
+    foreground = "#DCD7BA"
+    frame_color = "#C34043"

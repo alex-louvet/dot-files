@@ -1,0 +1,56 @@
+#!/bin/bash
+
+TWITCH=('aypierre' 'b1gmaw' 'bichard' 'cass_andre' 'chuckow' 'danyetraz' 'discordinsoumis' 'dokhy' 'domingo' 'imsofresh' 'jeanmassiet' 'lege' 'lord_tinen' 'magarky' 'malm' 'mouffette_' 'nenu' 'ostpolitik' 'otplol_' 'pasdebol_tft' 'shaunz' 'softstyl' 'theguill84' 'un33d' 'usul2000' 'voltariux' 'zerator' 'zozote')
+FRANCETV=('france-2' 'france-3' 'france-4' 'france-5')
+
+twitchchannels=""
+francetvchannels=""
+
+for channel in "${TWITCH[@]}";
+do
+	twitchchannels+="$channel\n"
+done
+
+for channel in "${FRANCETV[@]}";
+do
+	francetvchannels+="$channel\n"
+done
+
+platform=$(echo -e "twitch\nfrancetv" | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
+
+if [ $platform = "twitch" ];
+then
+	live=$(echo -e $twitchchannels | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
+	#chatterino --channels t:$live &
+	live="https://twitch.tv/$live"
+elif [ $platform = "francetv" ];
+then
+	live="https://www.france.tv/"
+	live+=$(echo -e $francetvchannels | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
+	live+="/direct.html" 
+else
+	live=$platform
+fi
+
+quality=$(streamlink $live)
+
+if [[ $quality = *"Available streams"* ]];
+then
+	quality=${quality/#*"streams: "}
+	quality=${quality//"(worst)"}
+	quality=${quality//"(best)"}
+	quality=${quality//,/"\n"}
+
+    quality=$(echo -e $quality | rofi -theme "bin/rasi/launcher.rasi" -dmenu)
+
+streamlink -p mpv $live $quality
+
+elif [[ $quality == *"No playable streams found on this URL"* ]];
+then
+    if ! [[ $quality == *"https://www.france.tv//direct.html"* ]];
+    then
+        $(rofi -e "stream offline" -theme "~/bin/rasi/stream_offline.rasi")
+    else
+        echo "1"
+    fi
+fi

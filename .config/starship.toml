@@ -1,0 +1,56 @@
+format = """
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$fill\
+$conda\
+$line_break\
+$character"""
+
+right_format = """$cmd_duration"""
+
+[conda]
+ignore_base = false
+format = '[$symbol$environment ]($style)'
+style = 'bold green'
+symbol = ' '
+
+[directory]
+style = "bold yellow"
+truncate_to_repo = false
+
+[character]
+success_symbol = "[  ](green)"
+error_symbol = "[  ]( green)"
+vimcmd_symbol = "[  ](blue)"
+vimcmd_visual_symbol = "[  ](purple)" 
+vimcmd_replace_symbol = "[  ](blue)"
+vimcmd_replace_one_symbol = "[  ](blue)"
+
+[git_branch]
+format = '[\[ $branch\]]($style)'
+style = "bright-white"
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "bright-white"
+
+[python]
+format = "[$virtualenv]($style) "
+style = "brwhite"
