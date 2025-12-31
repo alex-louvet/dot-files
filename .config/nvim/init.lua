@@ -718,7 +718,7 @@ require('lazy').setup({
       }
 
       local self_managed_install = {
-        -- ruff = {},
+        ruff = {},
         ty = {},
       }
 
