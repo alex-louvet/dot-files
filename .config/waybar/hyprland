@@ -3,6 +3,7 @@
 		"modules-left": ["hyprland/workspaces"],
 		"modules-center": ["hyprland/window"],
 		"modules-right": ["cpu", "memory","network", "hyprland/language","battery", "pulseaudio", "clock","tray","custom/power"],
+		"fixed-center": false,
 		"hyprland/workspaces": {
 			"all-outputs" : true
 		},
