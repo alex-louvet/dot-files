@@ -2,7 +2,7 @@
 	"position": "top",
 		"modules-left": ["hyprland/workspaces"],
 		"modules-center": ["hyprland/window"],
-		"modules-right": ["cpu", "memory","network", "hyprland/language","battery", "pulseaudio", "clock","tray","custom/power"],
+		"modules-right": ["cpu", "memory","network", "hyprland/language","battery","custom/idle", "pulseaudio", "clock","tray","custom/power"],
 		"fixed-center": false,
 		"hyprland/workspaces": {
 			"all-outputs" : true
@@ -79,5 +79,11 @@
 				"icon-size": 22,
 				"spacing": 5,
 				"show-passive-items": true
-			}
+			},
+			"custom/idle": {
+				"exec": "~/bin/idle.sh",
+				"interval": 5,
+				"on-click": "~/bin/idle-change.sh",
+				"tooltip": false,
+			},
 }

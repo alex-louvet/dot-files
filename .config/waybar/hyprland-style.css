@@ -30,7 +30,7 @@ button {
 
 button:hover {
   background: inherit;
-  color: @base0A;
+  color: @base9A;
   border-top: 2px solid @base0A;
 }
 
@@ -64,6 +64,7 @@ button:hover {
 #language,
 #cpu,
 #memory,
+#custom-idle,
 #scratchpad {
   margin-top: 2px;
   margin-bottom: 2px;
@@ -108,18 +109,15 @@ button:hover {
   border-bottom: 2px solid @base0D;
 }
 
-#idle_inhibitor {
-  margin-right: 12px;
-  color: #7cb342;
-}
-
-#idle_inhibitor.activated {
-  color: @;
-}
-
 #battery {
   color: @base0E;
   border-bottom: 2px solid @base0E;
+}
+
+#custom-idle {
+  color: @base0F;
+  border-bottom: 2px solid @base0F;
+  padding-right: 12px;
 }
 
 /* If workspaces is the leftmost module, omit left margin */
