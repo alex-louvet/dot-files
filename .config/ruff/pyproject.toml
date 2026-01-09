@@ -12,7 +12,8 @@ ignore = [
     "PLR2004", # magic-value-comparison
     "PLW0603", # global-statement
     "F405",
-    "F403"
+    "F403",
+    "PLR0913", # too many function arguments
 ]
 
 [tool.ruff.lint.per-file-ignores]
