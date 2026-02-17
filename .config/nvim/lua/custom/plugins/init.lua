@@ -136,11 +136,11 @@ return {
     end,
     ft = { 'markdown' },
   },
-  {
-    'folke/snacks.nvim',
-    ---@type snacks.Config
-    opts = {
-      scroll = {},
-    },
-  },
+  -- {
+  --   'folke/snacks.nvim',
+  --   ---@type snacks.Config
+  --   opts = {
+  --     scroll = {},
+  --   },
+  -- },
 }
