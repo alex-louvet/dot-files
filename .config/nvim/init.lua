@@ -195,6 +195,46 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd('BufWritePost', {
+  desc = 'Run latexmk -c after texlab finishes building',
+  pattern = '*.tex',
+  callback = function()
+    local file = vim.fn.expand '%:p'
+    local max_attempts = 20
+    local interval_ms = 500
+
+    local function try_clean(attempts_left)
+      if attempts_left <= 0 then
+        vim.notify('latexmk -c: timed out waiting for build', vim.log.levels.WARN)
+        return
+      end
+
+      -- Check if a latexmk/pdflatex build process is still running on this file
+      local result = vim.fn.systemlist { 'pgrep', '-f', 'latexmk.*' .. vim.fn.fnamemodify(file, ':t') }
+      local build_running = #result > 0
+
+      if build_running then
+        vim.defer_fn(function()
+          try_clean(attempts_left - 1)
+        end, interval_ms)
+      else
+        vim.fn.jobstart({ 'latexmk', '-c', file }, {
+          on_exit = function(_, code)
+            if code ~= 0 then
+              vim.notify('latexmk -c failed (exit ' .. code .. ')', vim.log.levels.WARN)
+            end
+          end,
+        })
+      end
+    end
+
+    -- Give texlab a moment to actually start the build before polling
+    vim.defer_fn(function()
+      try_clean(max_attempts)
+    end, interval_ms)
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -676,7 +716,7 @@ require('lazy').setup({
             texlab = {
 
               build = {
-                -- args = { '-pdf', '-interaction=nonstopmode', '-c', '-synctex=1', '%f' },
+                args = { '-pdf', '-interaction=nonstopmode', '%f' },
                 onSave = true,
               },
             },
