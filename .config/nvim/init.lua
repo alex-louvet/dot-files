@@ -676,7 +676,7 @@ require('lazy').setup({
             texlab = {
 
               build = {
-                -- args = { '-pdf', '-interaction=nonstopmode', '-synctex=1', '%f' },
+                args = { '-pdf', '-interaction=nonstopmode', '%f' },
                 onSave = true,
               },
             },
