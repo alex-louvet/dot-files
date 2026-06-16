@@ -22,7 +22,7 @@ return {
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    enabled = true,
+    enabled = false,
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
@@ -30,6 +30,13 @@ return {
     ---@type render.md.UserConfig
     opts = {},
     ft = { 'markdown' },
+  },
+  {
+    'OXY2DEV/markview.nvim',
+    lazy = false,
+
+    -- Completion for `blink.cmp`
+    -- dependencies = { "saghen/blink.cmp" },
   },
   {
     'matkrin/telescope-spell-errors.nvim',
