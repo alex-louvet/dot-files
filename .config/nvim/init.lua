@@ -12,31 +12,38 @@ end, { desc = 'Pin current file as main for tinymist' })
 -- Open PDF of current file typst
 vim.api.nvim_create_user_command('TypstPDF', function()
   local name = vim.fn.expand '%:p:r'
-  vim.cmd('terminal evince ' .. name .. '.pdf')
-  vim.cmd('e ' .. name .. '.typ')
-end, { desc = 'Open pdf correponding to current typst file' })
+  vim.fn.jobstart({ 'evince', name .. '.pdf' }, { detach = true })
+end, { desc = 'Open pdf corresponding to current typst file' })
 
 -- Open PDF of current file latex
 vim.api.nvim_create_user_command('LatexPDF', function()
   local name = vim.fn.expand '%:p:r'
-  vim.cmd('terminal evince ' .. name .. '.pdf')
-  vim.cmd('e ' .. name .. '.tex')
-end, { desc = 'Open pdf correponding to current typst file' })
+  vim.fn.jobstart({ 'evince', name .. '.pdf' }, { detach = true })
+end, { desc = 'Open pdf corresponding to current latex file' })
 
--- Watch typst file
+-- Watch typst file (kept as terminal — it's a long-running foreground process)
 vim.api.nvim_create_user_command('TypstWatch', function()
   local name = vim.fn.expand '%'
-  vim.cmd('terminal typst watch ' .. name)
-  vim.cmd('e ' .. name)
+  vim.cmd('split | terminal typst watch ' .. vim.fn.shellescape(name))
+  vim.cmd 'wincmd p'
 end, { desc = 'Launch hot reloading on current typst file' })
 
 -- Compile typst file
 vim.api.nvim_create_user_command('TypstCompile', function()
   local name = vim.fn.expand '%'
-  vim.cmd('terminal typst compile ' .. name)
-  vim.cmd('e ' .. name)
+  vim.fn.jobstart({ 'typst', 'compile', name }, {
+    detach = false,
+    on_exit = function(_, code)
+      if code == 0 then
+        vim.notify('Typst compiled successfully', vim.log.levels.INFO)
+      else
+        vim.notify('Typst compilation failed (code ' .. code .. ')', vim.log.levels.ERROR)
+      end
+    end,
+  })
 end, { desc = 'Compile current typst file' })
 
+-- Typst all-in-one: pin tinymist, open evince, start watcher
 vim.api.nvim_create_user_command('TypstAll', function()
   local name = vim.fn.expand '%'
   local namepdf = vim.fn.expand '%:p:r'
@@ -44,20 +51,29 @@ vim.api.nvim_create_user_command('TypstAll', function()
   for _, client in pairs(clients) do
     if client.name == 'tinymist' then
       client:exec_cmd { title = 'TypstPin', command = 'tinymist.pinMain', arguments = { vim.api.nvim_buf_get_name(0) } }
-      vim.cmd('terminal evince ' .. namepdf .. '.pdf')
-      vim.cmd('terminal typst watch ' .. name)
-      return vim.cmd('e ' .. name)
+      vim.fn.jobstart({ 'evince', namepdf .. '.pdf' }, { detach = true })
+      vim.cmd('split | terminal typst watch ' .. vim.fn.shellescape(name))
+      vim.cmd 'wincmd p'
+      return
     end
   end
-  return vim.notify('Tinymist client not found', vim.log.levels.ERROR)
-end, { desc = 'Compile current typst file' })
+  vim.notify('Tinymist client not found', vim.log.levels.ERROR)
+end, { desc = 'Pin tinymist, open evince, and start typst watcher' })
 
+-- Compile markdown to PDF and open it
 vim.api.nvim_create_user_command('MdToPDF', function()
   local name = vim.fn.expand '%:p:r'
-  vim.cmd('terminal pandoc -f markdown -t pdf ' .. name .. '.md -o ' .. name .. '.pdf')
-  vim.cmd('terminal evince ' .. name .. '.pdf')
-  vim.cmd('e ' .. name .. '.md')
-end, { desc = 'Compile markdown file to PDF (and open it)' })
+  vim.fn.jobstart({ 'pandoc', '-f', 'markdown', '-t', 'pdf', name .. '.md', '-o', name .. '.pdf' }, {
+    detach = false,
+    on_exit = function(_, code)
+      if code == 0 then
+        vim.fn.jobstart({ 'evince', name .. '.pdf' }, { detach = true })
+      else
+        vim.notify('pandoc failed (code ' .. code .. ')', vim.log.levels.ERROR)
+      end
+    end,
+  })
+end, { desc = 'Compile markdown file to PDF and open it' })
 
 vim.api.nvim_create_user_command('SpellCheck', 'setlocal spell spelllang=en_us', { desc = 'Enable spell check in english' })
 vim.api.nvim_create_user_command('SpellCheckFR', 'setlocal spell spelllang=fr_FR', { desc = 'Enable spell check in french' })
