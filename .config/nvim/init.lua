@@ -975,7 +975,6 @@ require('lazy').setup({
         'lua',
         'luadoc',
         'markdown',
-        'markdown-inline',
         'python',
         'query',
         'rust',
