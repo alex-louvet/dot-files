@@ -36,7 +36,24 @@ return {
     lazy = false,
 
     -- Completion for `blink.cmp`
-    -- dependencies = { "saghen/blink.cmp" },
+    dependencies = { 'saghen/blink.cmp' },
+    ---@type markview.config
+    opts = {
+      preview = {
+        -- Modes where the full preview is shown
+        modes = { 'n', 'no', 'c' },
+
+        -- Modes where hybrid mode is active (must overlap with `modes`)
+        hybrid_modes = { 'n' },
+
+        -- KEY OPTION: clear lines around cursor instead of by TS node
+        linewise_hybrid_mode = true,
+
+        -- How many lines above/below cursor to clear in linewise mode
+        -- { 0, 0 } = only the cursor line; { 1, 1 } = 3 lines total, etc.
+        edit_range = { 0, 0 },
+      },
+    },
   },
   {
     'matkrin/telescope-spell-errors.nvim',
