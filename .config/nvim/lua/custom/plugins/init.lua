@@ -53,7 +53,32 @@ return {
         -- { 0, 0 } = only the cursor line; { 1, 1 } = 3 lines total, etc.
         edit_range = { 0, 0 },
       },
+      markdown = {
+        headings = {
+          heading_1 = { style = 'icon', icon = '󰼏  ', sign = '󰌕 ', sign_hl = 'MarkviewHeading1Sign', hl = 'MarkviewHeading1' },
+          heading_2 = { style = 'icon', icon = '󰎨  ', sign = '󰌖 ', sign_hl = 'MarkviewHeading2Sign', hl = 'MarkviewHeading2' },
+          heading_3 = { style = 'icon', icon = '󰼑  ', hl = 'MarkviewHeading3' },
+          heading_4 = { style = 'icon', icon = '󰎲  ', hl = 'MarkviewHeading4' },
+          heading_5 = { style = 'icon', icon = '󰼓  ', hl = 'MarkviewHeading5' },
+          heading_6 = { style = 'icon', icon = '󰎴  ', hl = 'MarkviewHeading6' },
+          shift_width = 1,
+        },
+      },
     },
+    config = function(_, opts)
+      require('markview').setup(opts)
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        callback = function()
+          vim.api.nvim_set_hl(0, 'MarkviewHeading1', { fg = '#e06c75', bg = '#2d2223', bold = true })
+          vim.api.nvim_set_hl(0, 'MarkviewHeading2', { fg = '#e5c07b', bg = '#2d2a1e', bold = true })
+          vim.api.nvim_set_hl(0, 'MarkviewHeading3', { fg = '#98c379', bg = '#1e2d1e', bold = true })
+          vim.api.nvim_set_hl(0, 'MarkviewHeading4', { fg = '#56b6c2', bg = '#1a2a2d', bold = true })
+          vim.api.nvim_set_hl(0, 'MarkviewHeading5', { fg = '#61afef', bg = '#1a2233', bold = true })
+          vim.api.nvim_set_hl(0, 'MarkviewHeading6', { fg = '#c678dd', bg = '#261a2d', bold = true })
+        end,
+      })
+      vim.api.nvim_exec_autocmds('ColorScheme', {})
+    end,
   },
   {
     'matkrin/telescope-spell-errors.nvim',
