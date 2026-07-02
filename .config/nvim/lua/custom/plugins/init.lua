@@ -186,6 +186,119 @@ return {
     end,
     ft = { 'markdown' },
   },
+  {
+    'benlubas/molten-nvim',
+    build = ':UpdateRemotePlugins',
+    init = function()
+      vim.g.molten_image_provider = 'none'
+      vim.g.molten_output_win_max_height = 12
+
+      -- NEW: Show code execution results as non-blocking virtual text
+      vim.g.molten_show_virtual_text = true
+      vim.g.molten_virt_text_output = true
+      -- Centers the text or wraps it gracefully
+      vim.g.molten_wrap_output = true
+      vim.g.molten_virt_lines_prefix_char = ' \n '
+      vim.g.molten_virt_lines_suffix_char = ' \n '
+    end,
+    config = function()
+      -- Change the color of the output text itself (e.g., to a distinct teal/cyan)
+      vim.api.nvim_set_hl(0, 'MoltenVirtualText', { fg = '#00ADB5', italic = true })
+
+      -- Optional: Change the color of the little "Output:" prefix label
+      vim.api.nvim_set_hl(0, 'MoltenVirtualTextOutput', { fg = '#FF2E63', bold = true })
+    end,
+  },
+  {
+    'goerz/jupytext.nvim',
+    version = '*',
+    lazy = false,
+    opts = {
+      update = true,
+      -- Force Jupytext to ALWAYS present notebooks as percent-style Python code
+      format = 'py:percent',
+      -- Explicitly tell Neovim to treat these buffers as Python
+      filetype = 'python',
+    },
+    config = function(_, opts)
+      require('jupytext').setup(opts)
+
+      -- Automate pairing and syncing when saving a standard script
+      local sync_grp = vim.api.nvim_create_augroup('JupytextSyncBackend', { clear = true })
+      vim.api.nvim_create_autocmd('BufWritePost', {
+        group = sync_grp,
+        pattern = '*.py',
+        callback = function()
+          local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+          local is_notebook = false
+          for _, line in ipairs(lines) do
+            if line:match '^# %%%%-*' or line:match '^# %%' then
+              is_notebook = true
+              break
+            end
+          end
+
+          if is_notebook then
+            local current_file = vim.fn.expand '%:p'
+            vim.fn.jobstart { 'jupytext', '--set-formats', 'py:percent,ipynb', '--sync', current_file }
+          end
+        end,
+      })
+    end,
+  },
+
+  -- 2. Molten Engine
+  {
+    'benlubas/molten-nvim',
+    version = '^1.0.0',
+    build = ':UpdateRemotePlugins',
+    init = function()
+      vim.g.molten_image_provider = 'none'
+      vim.g.molten_output_win_max_height = 15
+      vim.g.molten_show_virtual_text = true
+      vim.g.molten_virt_text_output = true
+      vim.g.molten_wrap_output = true
+      vim.g.molten_virt_text_prefix = ' ↳ '
+      vim.g.molten_virt_lines_suffix_char = ' \n '
+    end,
+    config = function()
+      vim.api.nvim_set_hl(0, 'MoltenVirtualText', { fg = '#00ADB5', italic = true })
+    end,
+  },
+
+  -- 3. NotebookNavigator (Handles cell hopping & execution natively)
+  {
+    'GCBallesteros/NotebookNavigator.nvim',
+    keys = {
+      {
+        ']x',
+        function()
+          require('notebook-navigator').move_cell 'd'
+        end,
+        desc = 'Next code cell',
+      },
+      {
+        '[x',
+        function()
+          require('notebook-navigator').move_cell 'u'
+        end,
+        desc = 'Prev code cell',
+      },
+      {
+        '<leader>X',
+        function()
+          require('notebook-navigator').run_cell()
+        end,
+        desc = 'Run current cell',
+      },
+    },
+    dependencies = { 'echasnovski/mini.nvim' },
+    opts = {
+      activate_hydra_keys = nil,
+      repl_backend = 'molten',
+    },
+    ft = { 'python' },
+  },
   -- {
   --   'folke/snacks.nvim',
   --   ---@type snacks.Config
