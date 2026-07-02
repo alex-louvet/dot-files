@@ -192,20 +192,16 @@ return {
     init = function()
       vim.g.molten_image_provider = 'none'
       vim.g.molten_output_win_max_height = 12
-
-      -- NEW: Show code execution results as non-blocking virtual text
       vim.g.molten_show_virtual_text = true
       vim.g.molten_virt_text_output = true
-      -- Centers the text or wraps it gracefully
       vim.g.molten_wrap_output = true
       vim.g.molten_virt_lines_prefix_char = ' \n '
       vim.g.molten_virt_lines_suffix_char = ' \n '
+      vim.g.molten_auto_open_output = false
+      vim.g.molten_enter_output_behavior = 'never'
     end,
     config = function()
-      -- Change the color of the output text itself (e.g., to a distinct teal/cyan)
       vim.api.nvim_set_hl(0, 'MoltenVirtualText', { fg = '#00ADB5', italic = true })
-
-      -- Optional: Change the color of the little "Output:" prefix label
       vim.api.nvim_set_hl(0, 'MoltenVirtualTextOutput', { fg = '#FF2E63', bold = true })
     end,
   },
@@ -215,15 +211,12 @@ return {
     lazy = false,
     opts = {
       update = true,
-      -- Force Jupytext to ALWAYS present notebooks as percent-style Python code
       format = 'py:percent',
-      -- Explicitly tell Neovim to treat these buffers as Python
       filetype = 'python',
     },
     config = function(_, opts)
       require('jupytext').setup(opts)
 
-      -- Automate pairing and syncing when saving a standard script
       local sync_grp = vim.api.nvim_create_augroup('JupytextSyncBackend', { clear = true })
       vim.api.nvim_create_autocmd('BufWritePost', {
         group = sync_grp,
@@ -246,11 +239,9 @@ return {
       })
     end,
   },
-
-  -- 2. Molten Engine
   {
     'benlubas/molten-nvim',
-    version = '^1.0.0',
+    version = '*',
     build = ':UpdateRemotePlugins',
     init = function()
       vim.g.molten_image_provider = 'none'
@@ -265,8 +256,6 @@ return {
       vim.api.nvim_set_hl(0, 'MoltenVirtualText', { fg = '#00ADB5', italic = true })
     end,
   },
-
-  -- 3. NotebookNavigator (Handles cell hopping & execution natively)
   {
     'GCBallesteros/NotebookNavigator.nvim',
     keys = {
@@ -296,6 +285,7 @@ return {
     opts = {
       activate_hydra_keys = nil,
       repl_backend = 'molten',
+      show_output = false,
     },
     ft = { 'python' },
   },
