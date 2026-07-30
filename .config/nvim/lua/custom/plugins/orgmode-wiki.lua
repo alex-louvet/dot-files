@@ -128,7 +128,7 @@ local function rebuild_personal_index()
   local page_lines = {}
   for _, f in ipairs(files) do
     if vim.fn.fnamemodify(f, ':t') ~= 'index.org' then
-      table.insert(page_lines, string.format('- [[file:%s][%s]]', vim.fn.fnamemodify(f, ':t'), title_of(f)))
+      table.insert(page_lines, string.format('- [[file:./%s][%s]]', vim.fn.fnamemodify(f, ':t'), title_of(f)))
     end
   end
   update_auto_section(dir .. '/index.org', page_lines)
@@ -210,8 +210,8 @@ end
 
 local function rebuild_indexes()
   for _, spec in ipairs {
-    { root = WIKI .. '/research/projects', top = WIKI .. '/research/index.org', heading = 'Research Projects' },
-    { root = WIKI .. '/teaching/courses', top = WIKI .. '/teaching/index.org', heading = 'Courses' },
+    { root = WIKI .. '/research/projects', top = WIKI .. '/research/index.org', heading = 'Research Projects', subdir = 'projects' },
+    { root = WIKI .. '/teaching/courses', top = WIKI .. '/teaching/index.org', heading = 'Courses', subdir = 'courses' },
   } do
     local containers = vim.fn.globpath(spec.root, '*', false, true)
     table.sort(containers)
@@ -224,13 +224,13 @@ local function rebuild_indexes()
         local page_lines = {}
         for _, f in ipairs(files) do
           if vim.fn.fnamemodify(f, ':t') ~= 'index.org' then
-            table.insert(page_lines, string.format('- [[file:%s][%s]]', vim.fn.fnamemodify(f, ':t'), title_of(f)))
+            table.insert(page_lines, string.format('- [[file:./%s][%s]]', vim.fn.fnamemodify(f, ':t'), title_of(f)))
           end
         end
         update_auto_section(index_file, page_lines)
 
         local name = vim.fn.fnamemodify(dir, ':t')
-        table.insert(top_lines, string.format('- [[file:%s/index.org][%s]]', name, title_of(index_file)))
+        table.insert(top_lines, string.format('- [[file:./%s/%s/index.org][%s]]', spec.subdir, name, title_of(index_file)))
       end
     end
     vim.fn.writefile(top_lines, spec.top)
@@ -287,6 +287,29 @@ return {
       vim.keymap.set('n', '<leader>na', new_note_here, { desc = 'New note in current project/course' })
       vim.keymap.set('n', '<leader>ns', new_personal_note, { desc = 'New personal note (auto-indexed)' })
       vim.keymap.set('n', '<leader>oi', rebuild_indexes, { desc = 'Rebuild wiki index pages' })
+
+      -- Cycle through links with ]] / [[, org buffers only (Tab is already
+      -- claimed by headline folding and table-cell movement, so it's not
+      -- reused here; ]]/[[ are scoped to .org so their usual Vim meaning
+      -- elsewhere is untouched).
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'org',
+        callback = function(args)
+          -- Conceal [[file:...][Description]] down to just "Description".
+          -- concealcursor = "nc" reveals the raw syntax only when the
+          -- cursor line is being edited in Insert mode; Normal/Command
+          -- mode stay concealed everywhere, including the cursor line.
+          vim.opt_local.conceallevel = 2
+          vim.opt_local.concealcursor = 'nc'
+
+          vim.keymap.set('n', ']]', function()
+            vim.fn.search('\\[\\[.\\{-}\\]\\]', '')
+          end, { buffer = args.buf, desc = 'Next link' })
+          vim.keymap.set('n', '[[', function()
+            vim.fn.search('\\[\\[.\\{-}\\]\\]', 'b')
+          end, { buffer = args.buf, desc = 'Previous link' })
+        end,
+      })
     end,
   },
 
