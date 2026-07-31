@@ -208,6 +208,96 @@ local function new_note_here()
   end)
 end
 
+-- Realign the org table under the cursor by directly rewriting its lines.
+-- Self-contained (no dependency on nvim-orgmode's own Tab/insert-mode
+-- table handling), so it works regardless of treesitter/mode quirks.
+local function realign_table()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local cur = vim.api.nvim_win_get_cursor(0)
+  local row = cur[1]
+  local total = vim.api.nvim_buf_line_count(bufnr)
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, total, false)
+
+  local function is_table_line(line)
+    return line ~= nil and line:match '^%s*|' ~= nil
+  end
+
+  if not is_table_line(lines[row]) then
+    vim.notify('Cursor is not on a table line', vim.log.levels.WARN)
+    return
+  end
+
+  local start_row = row
+  while start_row > 1 and is_table_line(lines[start_row - 1]) do
+    start_row = start_row - 1
+  end
+  local end_row = row
+  while end_row < total and is_table_line(lines[end_row + 1]) do
+    end_row = end_row + 1
+  end
+
+  local function is_separator(line)
+    return line:match '^%s*|[%-%+:|]+%s*$' ~= nil
+  end
+
+  local function split_cells(line)
+    local trimmed = line:match('^%s*(.-)%s*$'):gsub('^|', ''):gsub('|$', '')
+    local cells = {}
+    for cell in (trimmed .. '|'):gmatch '(.-)|' do
+      table.insert(cells, cell:match '^%s*(.-)%s*$')
+    end
+    return cells
+  end
+
+  local rows, ncols = {}, 0
+  for i = start_row, end_row do
+    local line = lines[i]
+    if is_separator(line) then
+      table.insert(rows, { sep = true })
+    else
+      local cells = split_cells(line)
+      ncols = math.max(ncols, #cells)
+      table.insert(rows, { sep = false, cells = cells })
+    end
+  end
+
+  local widths = {}
+  for i = 1, ncols do
+    widths[i] = 1
+  end
+  for _, r in ipairs(rows) do
+    if not r.sep then
+      for i, cell in ipairs(r.cells) do
+        widths[i] = math.max(widths[i], vim.fn.strdisplaywidth(cell))
+      end
+    end
+  end
+
+  local function pad(s, width)
+    return s .. string.rep(' ', math.max(0, width - vim.fn.strdisplaywidth(s)))
+  end
+
+  local new_lines = {}
+  for _, r in ipairs(rows) do
+    if r.sep then
+      local parts = {}
+      for i = 1, ncols do
+        table.insert(parts, string.rep('-', widths[i] + 2))
+      end
+      table.insert(new_lines, '|' .. table.concat(parts, '+') .. '|')
+    else
+      local parts = {}
+      for i = 1, ncols do
+        table.insert(parts, ' ' .. pad(r.cells[i] or '', widths[i]) .. ' ')
+      end
+      table.insert(new_lines, '|' .. table.concat(parts, '|') .. '|')
+    end
+  end
+
+  vim.api.nvim_buf_set_lines(bufnr, start_row - 1, end_row, false, new_lines)
+  vim.api.nvim_win_set_cursor(0, { row, 0 })
+end
+
 local function rebuild_indexes()
   for _, spec in ipairs {
     { root = WIKI .. '/research/projects', top = WIKI .. '/research/index.org', heading = 'Research Projects', subdir = 'projects' },
@@ -215,7 +305,14 @@ local function rebuild_indexes()
   } do
     local containers = vim.fn.globpath(spec.root, '*', false, true)
     table.sort(containers)
-    local top_lines = { '#+TITLE: ' .. spec.heading, '' }
+    ensure_file(spec.top, {
+      '#+TITLE: ' .. spec.heading,
+      '',
+      '* Pages',
+      BEGIN_MARK,
+      END_MARK,
+    })
+    local top_page_lines = {}
     for _, dir in ipairs(containers) do
       if vim.fn.isdirectory(dir) == 1 then
         local index_file = dir .. '/index.org'
@@ -230,10 +327,10 @@ local function rebuild_indexes()
         update_auto_section(index_file, page_lines)
 
         local name = vim.fn.fnamemodify(dir, ':t')
-        table.insert(top_lines, string.format('- [[file:./%s/%s/index.org][%s]]', spec.subdir, name, title_of(index_file)))
+        table.insert(top_page_lines, string.format('- [[file:./%s/%s/index.org][%s]]', spec.subdir, name, title_of(index_file)))
       end
     end
-    vim.fn.writefile(top_lines, spec.top)
+    update_auto_section(spec.top, top_page_lines)
   end
   rebuild_personal_index()
   vim.notify 'Wiki indexes rebuilt'
@@ -287,6 +384,12 @@ return {
       vim.keymap.set('n', '<leader>na', new_note_here, { desc = 'New note in current project/course' })
       vim.keymap.set('n', '<leader>ns', new_personal_note, { desc = 'New personal note (auto-indexed)' })
       vim.keymap.set('n', '<leader>oi', rebuild_indexes, { desc = 'Rebuild wiki index pages' })
+
+      -- Realign the table under the cursor. Rewrites the table's lines
+      -- directly rather than relying on nvim-orgmode's own Tab-in-table
+      -- handling (which turned out to require conditions that weren't
+      -- panning out reliably here).
+      vim.keymap.set('n', '<leader>oR', realign_table, { desc = 'Realign table' })
 
       -- Cycle through links with ]] / [[, org buffers only (Tab is already
       -- claimed by headline folding and table-cell movement, so it's not
@@ -344,6 +447,95 @@ return {
     ft = { 'org' },
     config = function()
       require('org-bullets').setup()
+    end,
+  },
+
+  ----------------------------------------------------------------------
+  -- Calendar view of deadlines/scheduled items: a real month grid, not
+  -- just a linear agenda list. Days that have something due are marked;
+  -- picking a marked day lists what's due and lets you jump to it.
+  ----------------------------------------------------------------------
+  {
+    'wsdjeg/calendar.nvim',
+    keys = {
+      {
+        '<leader>ov',
+        function()
+          -- calendar.nvim always opens in a floating window (no config
+          -- option to change that), so grab its buffer right after
+          -- opening and move it into a normal bottom split instead.
+          require('calendar').open()
+          local calendar_buf = vim.api.nvim_get_current_buf()
+          local float_win = vim.api.nvim_get_current_win()
+          vim.cmd 'botright new'
+          vim.api.nvim_win_set_buf(0, calendar_buf)
+          pcall(vim.api.nvim_win_close, float_win, true)
+        end,
+        desc = 'Calendar view of deadlines',
+      },
+    },
+    config = function()
+      require('calendar').setup {
+        mark_icon = '•',
+      }
+
+      -- Scan every org file for DEADLINE/SCHEDULED dates, grouped by date.
+      local function scan_deadlines()
+        local by_date = {}
+        local files = vim.fn.globpath(WIKI, '**/*.org', false, true)
+        for _, f in ipairs(files) do
+          local heading = nil
+          for line in io.lines(f) do
+            local h = line:match '^%*+%s+(.*)'
+            if h then
+              heading = h
+            end
+            local date = line:match 'DEADLINE:%s*<(%d%d%d%d%-%d%d%-%d%d)' or line:match 'SCHEDULED:%s*<(%d%d%d%d%-%d%d%-%d%d)'
+            if date then
+              by_date[date] = by_date[date] or {}
+              table.insert(by_date[date], { file = f, text = heading or vim.fn.fnamemodify(f, ':t') })
+            end
+          end
+        end
+        return by_date
+      end
+
+      local wiki_ext = {}
+
+      function wiki_ext.get(year, month)
+        local by_date = scan_deadlines()
+        local prefix = string.format('%04d-%02d-', year, month)
+        local marks = {}
+        for date, _ in pairs(by_date) do
+          if date:sub(1, 8) == prefix then
+            table.insert(marks, { year = year, month = month, day = tonumber(date:sub(9, 10)) })
+          end
+        end
+        return marks
+      end
+
+      wiki_ext.actions = {
+        show_items = function(year, month, day)
+          local by_date = scan_deadlines()
+          local date = string.format('%04d-%02d-%02d', year, month, day)
+          local items = by_date[date]
+          if not items or #items == 0 then
+            vim.notify('Nothing due on ' .. date)
+            return
+          end
+          local labels = {}
+          for _, it in ipairs(items) do
+            table.insert(labels, it.text)
+          end
+          vim.ui.select(labels, { prompt = 'Due on ' .. date .. ':' }, function(_, idx)
+            if idx then
+              vim.cmd('edit ' .. items[idx].file)
+            end
+          end)
+        end,
+      }
+
+      require('calendar.extensions').register('wiki-deadlines', wiki_ext)
     end,
   },
 }
