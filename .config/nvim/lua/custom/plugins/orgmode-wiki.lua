@@ -1,43 +1,24 @@
 -- ~/.config/nvim/lua/plugins/orgmode-wiki.lua  (lazy.nvim spec)
 --
--- Wiki layout (inside your Nextcloud-synced folder). Both research and
--- teaching are two-level: a project/course is itself an index page that
--- links out to individual notes on different aspects of it.
+-- Flat wiki layout (Orgzly-friendly: WebDAV/local repos in Orgzly only
+-- sync files directly inside a folder, never subfolders).
 --
 -- ~/Nextcloud/wiki/
--- ├── index.org
--- ├── inbox.org                         <- quick/unfiled capture lands here
--- ├── research/
--- │   ├── index.org                     <- auto-generated, lists projects
--- │   └── projects/
--- │       └── <project>/
--- │           ├── index.org             <- project dashboard: Tasks (hand-
--- │           │                            edited) + Pages (auto-generated
--- │           │                            list of this project's notes)
--- │           ├── <note-a>.org
--- │           └── <note-b>.org
--- ├── teaching/
--- │   ├── index.org                     <- auto-generated, lists courses
--- │   └── courses/
--- │       └── <course>/
--- │           ├── index.org             <- same shape as a project index
--- │           ├── <note-a>.org
--- │           └── <note-b>.org
--- └── personal/
---     ├── index.org                     <- auto-generated (Tasks + Pages),
---     │                                    refreshed on every capture
---     ├── <note-a>.org
---     └── <note-b>.org
+-- ├── inbox.org               quick/unfiled capture lands here
+-- ├── project-<slug>.org     one file per project; aspects = headlines
+-- ├── course-<slug>.org      one file per course; aspects = headlines
+-- └── <slug>.org             personal notes, and anything "promoted"
+--                              out of a project/course file
 --
--- Create the folders once:
---   mkdir -p ~/Nextcloud/wiki/research/projects ~/Nextcloud/wiki/teaching/courses ~/Nextcloud/wiki/personal
---   touch ~/Nextcloud/wiki/index.org ~/Nextcloud/wiki/inbox.org
--- Individual project/course folders are created for you by <leader>np / <leader>nc.
--- personal/index.org is created and kept up to date automatically by <leader>ns.
+-- No index pages: <leader>nf is a live fuzzy search over every note's
+-- title + tags (type "project"/"course"/"personal" to filter), so
+-- there's nothing to keep in sync or rebuild.
+--
+-- Create once:
+--   mkdir -p ~/Nextcloud/wiki
+--   touch ~/Nextcloud/wiki/inbox.org
 
 local WIKI = vim.fn.expand '~/TheAbyss/wiki'
-local BEGIN_MARK = '# BEGIN-AUTO-INDEX'
-local END_MARK = '# END-AUTO-INDEX'
 
 ----------------------------------------------------------------------
 -- helpers
@@ -59,162 +40,113 @@ local function title_of(file)
   return vim.fn.fnamemodify(file, ':t:r')
 end
 
--- Replace only the lines between BEGIN_MARK/END_MARK, preserving everything
--- else in the file (so hand-written Tasks/notes are never touched).
-local function update_auto_section(file, new_lines)
-  local lines = {}
+local function tags_of(file)
   if vim.fn.filereadable(file) == 1 then
-    lines = vim.fn.readfile(file)
-  end
-  local begin_idx, end_idx
-  for i, l in ipairs(lines) do
-    if l == BEGIN_MARK then
-      begin_idx = i
-    end
-    if l == END_MARK then
-      end_idx = i
+    for line in io.lines(file) do
+      local t = line:match '^#%+FILETAGS:%s*(.+)'
+      if t then
+        return t
+      end
     end
   end
-  local result = {}
-  if begin_idx and end_idx and end_idx > begin_idx then
-    for i = 1, begin_idx do
-      table.insert(result, lines[i])
-    end
-    for _, l in ipairs(new_lines) do
-      table.insert(result, l)
-    end
-    for i = end_idx, #lines do
-      table.insert(result, lines[i])
-    end
-  else
-    for _, l in ipairs(lines) do
-      table.insert(result, l)
-    end
-    if #result > 0 then
-      table.insert(result, '')
-    end
-    table.insert(result, '* Pages')
-    table.insert(result, BEGIN_MARK)
-    for _, l in ipairs(new_lines) do
-      table.insert(result, l)
-    end
-    table.insert(result, END_MARK)
-  end
-  vim.fn.writefile(result, file)
+  return ''
 end
 
-local function ensure_file(file, initial_lines)
-  if vim.fn.filereadable(file) ~= 1 then
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ':h'), 'p')
-    vim.fn.writefile(initial_lines, file)
-  end
-end
-
--- Flat area: personal/<note>.org, auto-indexed into personal/index.org
--- every time a note is captured (no manual rebuild needed for this one).
-local function rebuild_personal_index()
-  local dir = WIKI .. '/personal'
-  ensure_file(dir .. '/index.org', {
-    '#+TITLE: Personal',
-    '',
-    '* Tasks',
-    '',
-    '* Pages',
-    BEGIN_MARK,
-    END_MARK,
-  })
-  local files = vim.fn.globpath(dir, '*.org', false, true)
-  table.sort(files)
-  local page_lines = {}
-  for _, f in ipairs(files) do
-    if vim.fn.fnamemodify(f, ':t') ~= 'index.org' then
-      table.insert(page_lines, string.format('- [[file:./%s][%s]]', vim.fn.fnamemodify(f, ':t'), title_of(f)))
-    end
-  end
-  update_auto_section(dir .. '/index.org', page_lines)
-end
-
-local function new_personal_note()
-  local dir = WIKI .. '/personal'
-  vim.fn.mkdir(dir, 'p')
-  local title = vim.fn.input 'Personal note title: '
-  if title == '' then
-    return
-  end
-  local file = dir .. '/' .. slugify(title) .. '.org'
-  vim.fn.writefile({ '#+TITLE: ' .. title, '' }, file)
-  rebuild_personal_index()
-  vim.cmd('edit ' .. file)
-end
-
-local function new_container(root, label)
+local function new_tagged_file(tag, label)
   local title = vim.fn.input(label .. ' title: ')
   if title == '' then
     return
   end
-  local slug = slugify(title)
-  local dir = root .. '/' .. slug
-  vim.fn.mkdir(dir, 'p')
-  local index = dir .. '/index.org'
+  local file = WIKI .. '/' .. slugify(title) .. '.org'
   vim.fn.writefile({
     '#+TITLE: ' .. title,
+    '#+FILETAGS: :' .. tag .. ':',
     '',
     '* Tasks',
     '',
-    '* Pages',
-    BEGIN_MARK,
-    END_MARK,
-  }, index)
-  vim.cmd('edit ' .. index)
-end
-
-local function in_container_dir(dir)
-  return dir:match('^' .. vim.pesc(WIKI) .. '/research/projects/[^/]+$') or dir:match('^' .. vim.pesc(WIKI) .. '/teaching/courses/[^/]+$')
-end
-
-local function create_note_in(dir)
-  local title = vim.fn.input 'Note title: '
-  if title == '' then
-    return
-  end
-  local file = dir .. '/' .. slugify(title) .. '.org'
-  vim.fn.writefile({ '#+TITLE: ' .. title, '' }, file)
+  }, file)
   vim.cmd('edit ' .. file)
 end
 
-local function new_note_here()
-  local cur_dir = vim.fn.expand '%:p:h'
-  if in_container_dir(cur_dir) then
-    create_note_in(cur_dir)
+local function new_personal_note()
+  local title = vim.fn.input 'Personal note title: '
+  if title == '' then
     return
   end
-  local roots = {}
-  for _, base in ipairs { WIKI .. '/research/projects', WIKI .. '/teaching/courses' } do
-    for _, d in ipairs(vim.fn.globpath(base, '*', false, true)) do
-      if vim.fn.isdirectory(d) == 1 then
-        table.insert(roots, d)
-      end
-    end
-  end
-  vim.ui.select(roots, {
-    prompt = 'Add note to:',
-    format_item = function(d)
-      return title_of(d .. '/index.org')
-    end,
-  }, function(choice)
-    if choice then
-      create_note_in(choice)
-    end
-  end)
+  local file = WIKI .. '/' .. slugify(title) .. '.org'
+  vim.fn.writefile({ '#+TITLE: ' .. title, '#+FILETAGS: :personal:', '' }, file)
+  vim.cmd('edit ' .. file)
 end
 
--- Realign the org table under the cursor by directly rewriting its lines.
--- Self-contained (no dependency on nvim-orgmode's own Tab/insert-mode
--- table handling), so it works regardless of treesitter/mode quirks.
+-- Append a new headline ("aspect") at the end of the current file and
+-- drop into Insert mode ready to write its body.
+local function new_aspect()
+  local title = vim.fn.input 'Aspect title: '
+  if title == '' then
+    return
+  end
+  local bufnr = vim.api.nvim_get_current_buf()
+  local last = vim.api.nvim_buf_line_count(bufnr)
+  vim.api.nvim_buf_set_lines(bufnr, last, last, false, { '', '** ' .. title, '' })
+  vim.api.nvim_win_set_cursor(0, { last + 3, 0 })
+  vim.cmd 'startinsert!'
+end
+
+-- Turn the headline under the cursor into a standalone file. The
+-- headline itself (and any TODO/DEADLINE on it) stays in place; its
+-- body becomes the new file, linked from where the body used to be.
+local function promote_to_file()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local headline = lines[row]
+  local stars, rest = headline:match '^(%*+)%s+(.*)$'
+  if not stars then
+    vim.notify('Cursor is not on a headline', vim.log.levels.WARN)
+    return
+  end
+  local level = #stars
+  local title = rest:gsub('^%u%u+%s+', ''):gsub('%s+:[%w:]+:%s*$', ''):gsub('%s+$', '')
+
+  local end_row = row
+  for i = row + 1, #lines do
+    local s = lines[i]:match '^(%*+)%s'
+    if s and #s <= level then
+      break
+    end
+    end_row = i
+  end
+
+  local body = {}
+  for i = row + 1, end_row do
+    local l = lines[i]
+    local s, r = l:match '^(%*+)(%s.*)$'
+    if s then
+      table.insert(body, string.rep('*', math.max(1, #s - level)) .. r)
+    else
+      table.insert(body, l)
+    end
+  end
+
+  local slug = slugify(title)
+  local file = WIKI .. '/' .. slug .. '.org'
+  local content = { '#+TITLE: ' .. title, '' }
+  vim.list_extend(content, body)
+  vim.fn.writefile(content, file)
+
+  local indent = string.rep(' ', level + 1)
+  vim.api.nvim_buf_set_lines(bufnr, row, end_row, false, {
+    indent .. '- [[file:./' .. slug .. '.org][' .. title .. ']]',
+  })
+  vim.notify('Promoted to ' .. slug .. '.org')
+end
+
+-- Realign the org table under the cursor by directly rewriting its
+-- lines (self-contained; doesn't depend on nvim-orgmode's own
+-- Tab/insert-mode table handling).
 local function realign_table()
   local bufnr = vim.api.nvim_get_current_buf()
-  local cur = vim.api.nvim_win_get_cursor(0)
-  local row = cur[1]
+  local row = vim.api.nvim_win_get_cursor(0)[1]
   local total = vim.api.nvim_buf_line_count(bufnr)
   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, total, false)
 
@@ -298,42 +230,71 @@ local function realign_table()
   vim.api.nvim_win_set_cursor(0, { row, 0 })
 end
 
-local function rebuild_indexes()
-  for _, spec in ipairs {
-    { root = WIKI .. '/research/projects', top = WIKI .. '/research/index.org', heading = 'Research Projects', subdir = 'projects' },
-    { root = WIKI .. '/teaching/courses', top = WIKI .. '/teaching/index.org', heading = 'Courses', subdir = 'courses' },
-  } do
-    local containers = vim.fn.globpath(spec.root, '*', false, true)
-    table.sort(containers)
-    ensure_file(spec.top, {
-      '#+TITLE: ' .. spec.heading,
-      '',
-      '* Pages',
-      BEGIN_MARK,
-      END_MARK,
-    })
-    local top_page_lines = {}
-    for _, dir in ipairs(containers) do
-      if vim.fn.isdirectory(dir) == 1 then
-        local index_file = dir .. '/index.org'
-        local files = vim.fn.globpath(dir, '*.org', false, true)
-        table.sort(files)
-        local page_lines = {}
-        for _, f in ipairs(files) do
-          if vim.fn.fnamemodify(f, ':t') ~= 'index.org' then
-            table.insert(page_lines, string.format('- [[file:./%s][%s]]', vim.fn.fnamemodify(f, ':t'), title_of(f)))
-          end
-        end
-        update_auto_section(index_file, page_lines)
+----------------------------------------------------------------------
+-- Telescope: find-or-create a note by title. Replaces both the old
+-- static index pages and org-roam.nvim. Type "project"/"course"/
+-- "personal" to filter via fuzzy match against title+tags; select an
+-- existing entry to use it, or press Enter with no match to create a
+-- new plain note titled exactly what you typed.
+----------------------------------------------------------------------
 
-        local name = vim.fn.fnamemodify(dir, ':t')
-        table.insert(top_page_lines, string.format('- [[file:./%s/%s/index.org][%s]]', spec.subdir, name, title_of(index_file)))
-      end
-    end
-    update_auto_section(spec.top, top_page_lines)
+local function get_notes()
+  local files = vim.fn.globpath(WIKI, '*.org', false, true)
+  table.sort(files)
+  local notes = {}
+  for _, f in ipairs(files) do
+    local t = title_of(f)
+    local tags = tags_of(f)
+    table.insert(notes, {
+      file = f,
+      title = t,
+      tags = tags,
+      display = string.format('%-45s %s', t, tags),
+    })
   end
-  rebuild_personal_index()
-  vim.notify 'Wiki indexes rebuilt'
+  return notes
+end
+
+local function find_or_create_note(on_select)
+  local ok_pickers, pickers = pcall(require, 'telescope.pickers')
+  if not ok_pickers then
+    vim.notify('telescope.nvim not found', vim.log.levels.ERROR)
+    return
+  end
+  local finders = require 'telescope.finders'
+  local conf = require('telescope.config').values
+  local actions = require 'telescope.actions'
+  local action_state = require 'telescope.actions.state'
+
+  pickers
+    .new({}, {
+      prompt_title = 'Find or create note',
+      finder = finders.new_table {
+        results = get_notes(),
+        entry_maker = function(entry)
+          return { value = entry, display = entry.display, ordinal = entry.title .. ' ' .. entry.tags }
+        end,
+      },
+      sorter = conf.generic_sorter {},
+      attach_mappings = function(prompt_bufnr, _)
+        actions.select_default:replace(function()
+          local selection = action_state.get_selected_entry()
+          local prompt = action_state.get_current_line()
+          actions.close(prompt_bufnr)
+          if selection then
+            on_select(selection.value.file, selection.value.title)
+          elseif prompt ~= '' then
+            local file = WIKI .. '/' .. slugify(prompt) .. '.org'
+            if vim.fn.filereadable(file) ~= 1 then
+              vim.fn.writefile({ '#+TITLE: ' .. prompt, '' }, file)
+            end
+            on_select(file, prompt)
+          end
+        end)
+        return true
+      end,
+    })
+    :find()
 end
 
 ----------------------------------------------------------------------
@@ -345,9 +306,10 @@ return {
     'nvim-orgmode/orgmode',
     event = 'VeryLazy',
     ft = { 'org' },
+    dependencies = { 'nvim-telescope/telescope.nvim' },
     config = function()
       require('orgmode').setup {
-        org_agenda_files = WIKI .. '/**/*.org',
+        org_agenda_files = WIKI .. '/*.org',
         org_default_notes_file = WIKI .. '/inbox.org',
 
         org_todo_keywords = { 'TODO(t)', 'NEXT(n)', '|', 'DONE(d)', 'CANCELLED(c)' },
@@ -361,8 +323,8 @@ return {
 
         mappings = {
           global = {
-            org_agenda = '<leader>oa', -- open calendar/agenda
-            org_capture = '<leader>oc', -- quick unfiled capture
+            org_agenda = '<leader>oa',
+            org_capture = '<leader>oc',
           },
           org = {
             org_todo = '<leader>ot',
@@ -376,35 +338,37 @@ return {
       }
 
       vim.keymap.set('n', '<leader>np', function()
-        new_container(WIKI .. '/research/projects', 'Project')
+        new_tagged_file('project', 'Project')
       end, { desc = 'New research project' })
       vim.keymap.set('n', '<leader>nc', function()
-        new_container(WIKI .. '/teaching/courses', 'Course')
+        new_tagged_file('course', 'Course')
       end, { desc = 'New course' })
-      vim.keymap.set('n', '<leader>na', new_note_here, { desc = 'New note in current project/course' })
-      vim.keymap.set('n', '<leader>ns', new_personal_note, { desc = 'New personal note (auto-indexed)' })
-      vim.keymap.set('n', '<leader>oi', rebuild_indexes, { desc = 'Rebuild wiki index pages' })
-
-      -- Realign the table under the cursor. Rewrites the table's lines
-      -- directly rather than relying on nvim-orgmode's own Tab-in-table
-      -- handling (which turned out to require conditions that weren't
-      -- panning out reliably here).
+      vim.keymap.set('n', '<leader>ns', new_personal_note, { desc = 'New personal note' })
+      vim.keymap.set('n', '<leader>na', new_aspect, { desc = 'New aspect (headline) in current file' })
+      vim.keymap.set('n', '<leader>nP', promote_to_file, { desc = 'Promote headline under cursor to its own file' })
       vim.keymap.set('n', '<leader>oR', realign_table, { desc = 'Realign table' })
 
-      -- Cycle through links with ]] / [[, org buffers only (Tab is already
-      -- claimed by headline folding and table-cell movement, so it's not
-      -- reused here; ]]/[[ are scoped to .org so their usual Vim meaning
-      -- elsewhere is untouched).
+      vim.keymap.set('n', '<leader>nf', function()
+        find_or_create_note(function(file)
+          vim.cmd('edit ' .. file)
+        end)
+      end, { desc = 'Find or create note' })
+
+      vim.keymap.set('i', '<C-l>', function()
+        vim.cmd 'stopinsert'
+        find_or_create_note(function(file, title)
+          local link = string.format('[[file:./%s][%s]]', vim.fn.fnamemodify(file, ':t'), title)
+          vim.api.nvim_put({ link }, 'c', true, true)
+          vim.cmd 'startinsert'
+        end)
+      end, { desc = 'Insert link to note' })
+
+      -- Cycle through links with ]] / [[, org buffers only.
       vim.api.nvim_create_autocmd('FileType', {
         pattern = 'org',
         callback = function(args)
-          -- Conceal [[file:...][Description]] down to just "Description".
-          -- concealcursor = "nc" reveals the raw syntax only when the
-          -- cursor line is being edited in Insert mode; Normal/Command
-          -- mode stay concealed everywhere, including the cursor line.
           vim.opt_local.conceallevel = 2
           vim.opt_local.concealcursor = 'nc'
-
           vim.keymap.set('n', ']]', function()
             vim.fn.search('\\[\\[.\\{-}\\]\\]', '')
           end, { buffer = args.buf, desc = 'Next link' })
@@ -413,29 +377,6 @@ return {
           end, { buffer = args.buf, desc = 'Previous link' })
         end,
       })
-    end,
-  },
-
-  ----------------------------------------------------------------------
-  -- Wiki-style linking: find-or-create a note by title, anywhere in the wiki
-  ----------------------------------------------------------------------
-  {
-    'chipsenkbeil/org-roam.nvim',
-    dependencies = { 'nvim-orgmode/orgmode' },
-    config = function()
-      require('org-roam').setup {
-        directory = WIKI,
-        org_files = { WIKI .. '/**/*.org' },
-        bindings = false, -- only the two mappings below, nothing else
-      }
-
-      vim.keymap.set('n', '<leader>nf', function()
-        require('org-roam.api').find_node()
-      end, { desc = 'Find or create linked note' })
-
-      vim.keymap.set('i', '<C-l>', function()
-        require('org-roam.api').complete_at_point()
-      end, { desc = 'Insert link to note' })
     end,
   },
 
@@ -451,9 +392,7 @@ return {
   },
 
   ----------------------------------------------------------------------
-  -- Calendar view of deadlines/scheduled items: a real month grid, not
-  -- just a linear agenda list. Days that have something due are marked;
-  -- picking a marked day lists what's due and lets you jump to it.
+  -- Calendar view of deadlines/scheduled items
   ----------------------------------------------------------------------
   {
     'wsdjeg/calendar.nvim',
@@ -461,9 +400,6 @@ return {
       {
         '<leader>ov',
         function()
-          -- calendar.nvim always opens in a floating window (no config
-          -- option to change that), so grab its buffer right after
-          -- opening and move it into a normal bottom split instead.
           require('calendar').open()
           local calendar_buf = vim.api.nvim_get_current_buf()
           local float_win = vim.api.nvim_get_current_win()
@@ -475,14 +411,11 @@ return {
       },
     },
     config = function()
-      require('calendar').setup {
-        mark_icon = '•',
-      }
+      require('calendar').setup { mark_icon = '•' }
 
-      -- Scan every org file for DEADLINE/SCHEDULED dates, grouped by date.
       local function scan_deadlines()
         local by_date = {}
-        local files = vim.fn.globpath(WIKI, '**/*.org', false, true)
+        local files = vim.fn.globpath(WIKI, '*.org', false, true)
         for _, f in ipairs(files) do
           local heading = nil
           for line in io.lines(f) do
