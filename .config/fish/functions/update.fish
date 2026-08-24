@@ -1,4 +1,4 @@
 function update --wraps='sudo apt update && sudo apt upgrade && snap refresh && sudo bash /home/allouvet/Downloads/zen.sh --install' --description 'alias update=sudo apt update && sudo apt upgrade && sudo snap refresh && sudo bash /home/allouvet/Downloads/zen.sh --install'
-  sudo apt update && sudo apt upgrade && sudo snap refresh && uv tool upgrade --all && bash /home/allouvet/bin/zen.sh $argv
+  sudo apt update && sudo apt upgrade && sudo snap refresh && uv tool upgrade --all && cargo install-update --all && bash /home/allouvet/bin/zen.sh $argv
         
 end

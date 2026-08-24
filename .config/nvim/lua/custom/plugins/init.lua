@@ -33,6 +33,8 @@ return {
   },
   {
     'OXY2DEV/markview.nvim',
+    enabled = true,
+    ft = { 'markdown' },
     lazy = false,
 
     -- Completion for `blink.cmp`

@@ -78,7 +78,6 @@ end, { desc = 'Compile markdown file to PDF and open it' })
 vim.api.nvim_create_user_command('SpellCheck', 'setlocal spell spelllang=en_us', { desc = 'Enable spell check in english' })
 vim.api.nvim_create_user_command('SpellCheckFR', 'setlocal spell spelllang=fr', { desc = 'Enable spell check in french' })
 
-vim.g.wiki_root = '~/Seafile/wiki'
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)

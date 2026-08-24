@@ -216,3 +216,9 @@ end
 if not set -q TMUX && test $TERM = xterm-ghostty
     fortune | cowsay -pn
 end
+
+# opencode
+fish_add_path /home/allouvet/.opencode/bin
+
+# OpenCode Vim
+fish_add_path "/home/allouvet/.ocv/bin"
